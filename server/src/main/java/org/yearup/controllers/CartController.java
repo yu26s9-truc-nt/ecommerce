@@ -1,11 +1,14 @@
 package org.yearup.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.dtos.CartDTO;
+import org.yearup.dtos.CartItemDTO;
+import org.yearup.dtos.CartItemUpdateDTO;
 import org.yearup.models.CartItem;
 import org.yearup.models.User;
 import org.yearup.service.CartService;
@@ -57,6 +60,15 @@ public class CartController {
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15  (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated; return the cart (200 OK)
+    @PatchMapping("/products/{productId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public CartDTO updateCartItem(Principal principal, @PathVariable int productId, @Valid @RequestBody CartItemUpdateDTO updatingCartItem) {
+        String userName = principal.getName();
+        User user = userService.getByUserName(userName);
+        int userId = user.getId();
+
+        return cartService.updateCartItem(userId, productId, updatingCartItem);
+    }
 
 
     // add a DELETE method to clear all products from the current users cart

@@ -2,6 +2,7 @@ package org.yearup.service;
 
 import org.springframework.stereotype.Service;
 import org.yearup.dtos.CartItemDTO;
+import org.yearup.dtos.CartItemUpdateDTO;
 import org.yearup.models.CartItem;
 import org.yearup.dtos.CartDTO;
 import org.yearup.models.Product;
@@ -41,7 +42,7 @@ public class CartService {
         Optional<CartItem> existingCartItem = shoppingCartRepository.findByUserIdAndProduct_ProductId(userId, productId);
         existingCartItem.ifPresentOrElse(
                 cartItem -> {
-                    cartItem.increaseQuantity();
+                    cartItem.increaseQuantity(1);
                     shoppingCartRepository.save(cartItem);
                 },
                 () -> {
@@ -59,5 +60,26 @@ public class CartService {
         return getCart(userId);
     }
 
-    // add additional methods here
+    public CartDTO updateCartItem(int userId, int productId, CartItemUpdateDTO updatingCartItem) {
+        Optional<CartItem> existingCartItem = shoppingCartRepository.findByUserIdAndProduct_ProductId(userId, productId);
+        existingCartItem.ifPresentOrElse(
+                cartItem -> {
+                    if (updatingCartItem.getQuantity() != null) cartItem.increaseQuantity(updatingCartItem.getQuantity());
+                    shoppingCartRepository.save(cartItem);
+                },
+                () -> {
+                    Product product = productService.getById(productId)
+                            .orElseThrow();
+
+                    CartItem cartItem = new CartItem();
+                    cartItem.setUserId(userId);
+                    cartItem.setProduct(product);
+                    if (updatingCartItem.getQuantity() != null) cartItem.increaseQuantity(updatingCartItem.getQuantity());
+
+                    shoppingCartRepository.save(cartItem);
+                }
+        );
+
+        return getCart(userId);
+    }
 }

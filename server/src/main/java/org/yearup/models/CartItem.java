@@ -55,29 +55,19 @@ public class CartItem {
         return quantity;
     }
 
-    public void setQuantity(int quantity)
-    {
-        this.quantity = quantity;
-    }
-
-    public void increaseQuantity() {
-        increaseQuantity(1);
-    }
-
-    public void decreaseQuantity() {
-        decreaseQuantity(1);
-    }
-
-    public void increaseQuantity(int quantity) {
-        if (this.quantity + quantity > product.getStock()) {
-            throw new IllegalStateException(
-                    "Requested quantity exceeds available stock.");
+    public void setQuantity(int quantity) {
+        if (quantity > product.getStock()) {
+            throw new IllegalStateException("Requested quantity exceeds available stock.");
         }
 
-        this.quantity += quantity;
+        this.quantity = Math.max(0, quantity);
     }
 
-    public void decreaseQuantity(int quantity) {
-        this.quantity = Math.max(0, this.quantity - quantity);
+    public void increaseQuantity(int amount) {
+        setQuantity(quantity + amount);
+    }
+
+    public void decreaseQuantity(int amount) {
+        setQuantity(this.quantity - amount);
     }
 }
