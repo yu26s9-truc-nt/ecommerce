@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "shopping_cart")
-public class CartItem
-{
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_item_id")
@@ -14,8 +13,9 @@ public class CartItem
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "product_id")
-    private int productId;
+    @ManyToOne()
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "quantity")
     private int quantity = 1;
@@ -40,14 +40,14 @@ public class CartItem
         this.userId = userId;
     }
 
-    public int getProductId()
+    public Product getProduct()
     {
-        return productId;
+        return product;
     }
 
-    public void setProductId(int productId)
+    public void setProduct(Product product)
     {
-        this.productId = productId;
+        this.product = product;
     }
 
     public int getQuantity()
@@ -58,5 +58,26 @@ public class CartItem
     public void setQuantity(int quantity)
     {
         this.quantity = quantity;
+    }
+
+    public void increaseQuantity() {
+        increaseQuantity(1);
+    }
+
+    public void decreaseQuantity() {
+        decreaseQuantity(1);
+    }
+
+    public void increaseQuantity(int quantity) {
+        if (this.quantity + quantity > product.getStock()) {
+            throw new IllegalStateException(
+                    "Requested quantity exceeds available stock.");
+        }
+
+        this.quantity += quantity;
+    }
+
+    public void decreaseQuantity(int quantity) {
+        this.quantity = Math.max(0, this.quantity - quantity);
     }
 }

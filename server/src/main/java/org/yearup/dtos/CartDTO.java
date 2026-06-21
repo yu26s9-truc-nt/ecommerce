@@ -1,39 +1,37 @@
-package org.yearup.models;
+package org.yearup.dtos;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ShoppingCart
-{
-    private Map<Integer, ShoppingCartItem> items = new HashMap<>();
+public class CartDTO {
+    private Map<Integer, CartItemDTO> items = new HashMap<>();
 
-    public Map<Integer, ShoppingCartItem> getItems()
+    public Map<Integer, CartItemDTO> getItems()
     {
         return items;
     }
 
-    public void setItems(Map<Integer, ShoppingCartItem> items)
+    public void setItems(Map<Integer, CartItemDTO> items)
     {
         this.items = items;
     }
 
-    public boolean contains(int productId)
-    {
+    public boolean contains(int productId) {
         return items.containsKey(productId);
     }
 
-    public void add(ShoppingCartItem item)
+    public void add(CartItemDTO item)
     {
         items.put(item.getProductId(), item);
     }
 
-    public ShoppingCartItem get(int productId)
+    public CartItemDTO get(int productId)
     {
         return items.get(productId);
     }
 
-    public double getTotal()
-    {
+    public double getTotal() {
         double total = items.values()
                             .stream()
                             .mapToDouble(i -> i.getLineTotal())
