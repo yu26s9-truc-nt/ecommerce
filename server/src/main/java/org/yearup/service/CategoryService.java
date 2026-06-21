@@ -23,18 +23,23 @@ public class CategoryService {
         return categoryRepository.findById(categoryId);
     }
 
-    public Category create(Category category) {
-        return categoryRepository.save(category);
+    public Category create(Category creatingCategory) {
+        return categoryRepository.save(creatingCategory);
     }
 
-    public Category update(int categoryId, Category category)
-    {
-        // update category and return the updated category
-        return null;
+    public Optional<Category> update(int categoryId, Category updatingCategory) {
+        return categoryRepository.findById(categoryId).map(category -> {
+            if (updatingCategory.getName() != null) category.setName(updatingCategory.getName());
+            if (updatingCategory.getDescription() != null) category.setDescription(updatingCategory.getDescription());
+            return categoryRepository.save(category);
+        });
     }
 
-    public void delete(int categoryId)
-    {
-        // delete category
+    public boolean delete(int categoryId) {
+        if (categoryRepository.existsById(categoryId)) {
+            categoryRepository.deleteById(categoryId);
+            return true;
+        }
+        return false;
     }
 }

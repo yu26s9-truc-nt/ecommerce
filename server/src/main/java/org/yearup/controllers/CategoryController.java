@@ -30,10 +30,10 @@ public class CategoryController {
         return categoryService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{categoryId}")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<Category> getById(@PathVariable int id) {
-        return categoryService.getById(id)
+    public ResponseEntity<Category> getById(@PathVariable int categoryId) {
+        return categoryService.getById(categoryId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -46,25 +46,26 @@ public class CategoryController {
 
     @PostMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) {
-        Category createdCategory = categoryService.create(category);
+    public ResponseEntity<Category> createCategory(@Valid @RequestBody Category creatingCategory) {
+        Category createdCategory = categoryService.create(creatingCategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
 
-    // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
-    // add annotation to ensure that only an ADMIN can call this function
-    public Category updateCategory(@PathVariable int id, @RequestBody Category category)
-    {
-        // update the category by id and return the updated category (200 OK)
-        return null;
+    @PatchMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Category> updateCategory(@PathVariable int categoryId, @RequestBody Category updatingCategory) {
+        return categoryService.update(categoryId, updatingCategory)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 
-    // add annotation to call this method for a DELETE action - the url path must include the categoryId
-    // add annotation to ensure that only an ADMIN can call this function
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id)
-    {
-        // delete the category by id and return status 204 No Content
-        return null;
+    @DeleteMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteCategory(@PathVariable int categoryId) {
+        if (categoryService.delete(categoryId)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
