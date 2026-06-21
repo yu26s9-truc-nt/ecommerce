@@ -41,9 +41,6 @@ public class CartController {
         return cartService.getCart(userId);
     }
 
-    // add a POST method to add a product to the cart - the url should be
-    // https://localhost:8080/cart/products/15  (15 is the productId to be added)
-    // return the updated cart with status 201 Created
     @PostMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<CartDTO> addCartItem(Principal principal, @PathVariable int productId) {
@@ -56,10 +53,6 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cart);
     }
 
-
-    // add a PUT method to update an existing product in the cart - the url should be
-    // https://localhost:8080/cart/products/15  (15 is the productId to be updated)
-    // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated; return the cart (200 OK)
     @PatchMapping("/products/{productId}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public CartDTO updateCartItem(Principal principal, @PathVariable int productId, @Valid @RequestBody CartItemUpdateDTO updatingCartItem) {
@@ -70,8 +63,14 @@ public class CartController {
         return cartService.updateCartItem(userId, productId, updatingCartItem);
     }
 
+    @DeleteMapping("")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Void> deleteCart(Principal principal) {
+        String userName = principal.getName();
+        User user = userService.getByUserName(userName);
+        int userId = user.getId();
 
-    // add a DELETE method to clear all products from the current users cart
-    // https://localhost:8080/cart  - return the (now empty) cart so the front end can refresh it (200 OK)
-
+        cartService.deleteCart(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

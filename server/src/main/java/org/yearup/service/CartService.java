@@ -1,5 +1,6 @@
 package org.yearup.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.yearup.dtos.CartItemDTO;
 import org.yearup.dtos.CartItemUpdateDTO;
@@ -42,7 +43,7 @@ public class CartService {
         Optional<CartItem> existingCartItem = shoppingCartRepository.findByUserIdAndProduct_ProductId(userId, productId);
         existingCartItem.ifPresentOrElse(
                 cartItem -> {
-                    cartItem.increaseQuantity(1);
+                    cartItem.setQuantity(cartItem.getQuantity() + 1);
                     shoppingCartRepository.save(cartItem);
                 },
                 () -> {
@@ -64,8 +65,10 @@ public class CartService {
         Optional<CartItem> existingCartItem = shoppingCartRepository.findByUserIdAndProduct_ProductId(userId, productId);
         existingCartItem.ifPresentOrElse(
                 cartItem -> {
-                    if (updatingCartItem.getQuantity() != null) cartItem.increaseQuantity(updatingCartItem.getQuantity());
-                    shoppingCartRepository.save(cartItem);
+                    if (updatingCartItem.getQuantity() != null) cartItem.setQuantity(cartItem.getQuantity() + updatingCartItem.getQuantity());
+
+                    if (cartItem.getQuantity() == 0) shoppingCartRepository.deleteById(cartItem.getCartItemId());
+                    else shoppingCartRepository.save(cartItem);
                 },
                 () -> {
                     Product product = productService.getById(productId)
@@ -74,12 +77,18 @@ public class CartService {
                     CartItem cartItem = new CartItem();
                     cartItem.setUserId(userId);
                     cartItem.setProduct(product);
-                    if (updatingCartItem.getQuantity() != null) cartItem.increaseQuantity(updatingCartItem.getQuantity());
+                    if (updatingCartItem.getQuantity() != null) cartItem.setQuantity(cartItem.getQuantity() + updatingCartItem.getQuantity());
 
-                    shoppingCartRepository.save(cartItem);
+                    if (cartItem.getQuantity() == 0) shoppingCartRepository.deleteById(cartItem.getCartItemId());
+                    else shoppingCartRepository.save(cartItem);
                 }
         );
 
         return getCart(userId);
+    }
+
+    @Transactional
+    public void deleteCart(int userId) {
+        shoppingCartRepository.deleteByUserId(userId);
     }
 }

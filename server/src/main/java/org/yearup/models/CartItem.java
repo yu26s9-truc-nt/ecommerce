@@ -20,38 +20,31 @@ public class CartItem {
     @Column(name = "quantity")
     private int quantity = 1;
 
-    public int getCartItemId()
-    {
+    public int getCartItemId() {
         return cartItemId;
     }
 
-    public void setCartItemId(int cartItemId)
-    {
+    public void setCartItemId(int cartItemId) {
         this.cartItemId = cartItemId;
     }
 
-    public int getUserId()
-    {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId)
-    {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public Product getProduct()
-    {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(Product product)
-    {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
-    public int getQuantity()
-    {
+    public int getQuantity() {
         return quantity;
     }
 
@@ -61,13 +54,5 @@ public class CartItem {
         }
 
         this.quantity = Math.max(0, quantity);
-    }
-
-    public void increaseQuantity(int amount) {
-        setQuantity(quantity + amount);
-    }
-
-    public void decreaseQuantity(int amount) {
-        setQuantity(this.quantity - amount);
     }
 }
