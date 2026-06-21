@@ -40,16 +40,14 @@ public class ProductController {
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product)
-    {
-        Product saved = productService.create(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    public ResponseEntity<Product> createProduct(@RequestBody Product creatingProduct) {
+        Product createdProduct = productService.create(creatingProduct);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Product updateProduct(@PathVariable int id, @RequestBody Product product)
-    {
+    public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
         if (productService.getById(id) == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 

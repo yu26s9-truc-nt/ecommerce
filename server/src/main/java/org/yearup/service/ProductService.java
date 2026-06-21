@@ -37,10 +37,8 @@ public class ProductService {
         return productRepository.findById(productId);
     }
 
-    public Product create(Product product)
-    {
-        product.setProductId(0);
-        return productRepository.save(product);
+    public Product create(Product creatingProduct) {
+        return productRepository.save(creatingProduct);
     }
 
     public Product update(int productId, Product product)
