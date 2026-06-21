@@ -1,6 +1,8 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "categories")
@@ -12,13 +14,14 @@ public class Category
     private int categoryId;
 
     @Column(name = "name")
+    @NotBlank
+    @NotNull
     private String name;
 
     @Column(name = "description")
     private String description;
 
-    public Category()
-    {
+    public Category() {
     }
 
     public Category(int categoryId, String name, String description)
