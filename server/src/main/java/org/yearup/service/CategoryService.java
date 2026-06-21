@@ -23,10 +23,8 @@ public class CategoryService {
         return categoryRepository.findById(categoryId);
     }
 
-    public Category create(Category category)
-    {
-        // create a new category
-        return null;
+    public Category create(Category category) {
+        return categoryRepository.save(category);
     }
 
     public Category update(int categoryId, Category category)
