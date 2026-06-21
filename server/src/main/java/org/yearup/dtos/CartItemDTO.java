@@ -1,12 +1,17 @@
-package org.yearup.models;
+package org.yearup.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.yearup.models.Product;
 
-public class ShoppingCartItem
-{
-    private Product product = null;
+public class CartItemDTO {
+    private Product product;
     private int quantity = 1;
     private double discountPercent = 0;
+
+    public CartItemDTO(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
 
     public Product getProduct()
     {
@@ -44,8 +49,7 @@ public class ShoppingCartItem
         return this.product.getProductId();
     }
 
-    public double getLineTotal()
-    {
+    public double getLineTotal() {
         double basePrice = product.getPrice();
         double subTotal = basePrice * this.quantity;
         double discountAmount = subTotal * discountPercent;

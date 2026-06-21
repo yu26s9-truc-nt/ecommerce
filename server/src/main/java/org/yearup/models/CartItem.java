@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "shopping_cart")
-public class CartItem
-{
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_item_id")
@@ -14,49 +13,46 @@ public class CartItem
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "product_id")
-    private int productId;
+    @ManyToOne()
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "quantity")
     private int quantity = 1;
 
-    public int getCartItemId()
-    {
+    public int getCartItemId() {
         return cartItemId;
     }
 
-    public void setCartItemId(int cartItemId)
-    {
+    public void setCartItemId(int cartItemId) {
         this.cartItemId = cartItemId;
     }
 
-    public int getUserId()
-    {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId)
-    {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public int getProductId()
-    {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(int productId)
-    {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public int getQuantity()
-    {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity)
-    {
-        this.quantity = quantity;
+    public void setQuantity(int quantity) {
+        if (quantity > product.getStock()) {
+            throw new IllegalStateException("Requested quantity exceeds available stock.");
+        }
+
+        this.quantity = Math.max(0, quantity);
     }
 }
