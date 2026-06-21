@@ -1,10 +1,12 @@
 package org.yearup.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.yearup.dtos.ProductUpdateDTO;
 import org.yearup.models.Product;
 import org.yearup.service.ProductService;
 
@@ -45,13 +47,12 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("{productId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
-        if (productService.getById(id) == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-        return productService.update(id, product);
+    public ResponseEntity<Product> updateProduct(@PathVariable int productId, @Valid @RequestBody ProductUpdateDTO updatingProduct) {
+        return productService.update(productId, updatingProduct)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("{id}")

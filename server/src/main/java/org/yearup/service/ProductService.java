@@ -1,6 +1,7 @@
 package org.yearup.service;
 
 import org.springframework.stereotype.Service;
+import org.yearup.dtos.ProductUpdateDTO;
 import org.yearup.models.Product;
 import org.yearup.repository.ProductRepository;
 
@@ -41,17 +42,18 @@ public class ProductService {
         return productRepository.save(creatingProduct);
     }
 
-    public Product update(int productId, Product product)
-    {
-        Product existing = productRepository.findById(productId).orElseThrow();
-        existing.setName(product.getName());
-        existing.setPrice(product.getPrice());
-        existing.setCategoryId(product.getCategoryId());
-        existing.setDescription(product.getDescription());
-        existing.setSubCategory(product.getSubCategory());
-        existing.setFeatured(product.isFeatured());
-        existing.setImageUrl(product.getImageUrl());
-        return productRepository.save(existing);
+    public Optional<Product> update(int productId, ProductUpdateDTO updatingProduct) {
+        return productRepository.findById(productId).map(product -> {
+            if (updatingProduct.getName() != null) product.setName(updatingProduct.getName());
+            if (updatingProduct.getPrice() != null) product.setPrice(updatingProduct.getPrice());
+            if (updatingProduct.getCategoryId() != null) product.setCategoryId(updatingProduct.getCategoryId());
+            if (updatingProduct.getDescription() != null) product.setDescription(updatingProduct.getDescription());
+            if (updatingProduct.getSubCategory() != null) product.setSubCategory(updatingProduct.getSubCategory());
+            if (updatingProduct.getStock() != null) product.setStock(updatingProduct.getStock());
+            if (updatingProduct.getSubCategory() != null) product.setFeatured(updatingProduct.getFeatured());
+            if (updatingProduct.getImageUrl() != null) product.setImageUrl(updatingProduct.getImageUrl());
+            return productRepository.save(product);
+        });
     }
 
     public void delete(int productId)

@@ -1,31 +1,39 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
-public class Product
-{
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private int productId;
 
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
 
+    @PositiveOrZero
     @Column(name = "price")
     private double price;
 
     @Column(name = "category_id")
     private int categoryId;
 
+    @Size(max = 500)
     @Column(name = "description")
     private String description;
 
     @Column(name = "subcategory")
     private String subCategory;
 
+    @Min(0)
     @Column(name = "stock")
     private int stock;
 
@@ -35,12 +43,10 @@ public class Product
     @Column(name = "image_url")
     private String imageUrl;
 
-    public Product()
-    {
+    public Product() {
     }
 
-    public Product(int productId, String name, double price, int categoryId, String description, String subCategory, int stock, boolean isFeatured, String imageUrl)
-    {
+    public Product(int productId, String name, double price, int categoryId, String description, String subCategory, int stock, boolean isFeatured, String imageUrl) {
         this.productId = productId;
         this.name = name;
         this.price = price;
@@ -82,8 +88,7 @@ public class Product
         this.price = price;
     }
 
-    public int getCategoryId()
-    {
+    public int getCategoryId() {
         return categoryId;
     }
 
