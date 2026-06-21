@@ -13,35 +13,29 @@ import java.util.List;
 @RestController
 @RequestMapping("products")
 @CrossOrigin
-public class ProductsController
-{
+public class ProductController {
     private final ProductService productService;
 
-    public ProductsController(ProductService productService)
+    public ProductController(ProductService productService)
     {
         this.productService = productService;
     }
 
     @GetMapping("")
     @PreAuthorize("permitAll()")
-    public List<Product> search(@RequestParam(name="cat", required = false) Integer categoryId,
+    public List<Product> get(@RequestParam(name="categoryId", required = false) Integer categoryId,
                                 @RequestParam(name="minPrice", required = false) Double minPrice,
                                 @RequestParam(name="maxPrice", required = false) Double maxPrice,
-                                @RequestParam(name="subCategory", required = false) String subCategory)
-    {
-        return productService.search(categoryId, minPrice, maxPrice, subCategory);
+                                @RequestParam(name="subCategory", required = false) String subCategory) {
+        return productService.get(categoryId, minPrice, maxPrice, subCategory);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{productId}")
     @PreAuthorize("permitAll()")
-    public Product getById(@PathVariable int id)
-    {
-        Product product = productService.getById(id);
-
-        if (product == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-
-        return product;
+    public ResponseEntity<Product> getById(@PathVariable int productId) {
+        return productService.getById(productId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping()

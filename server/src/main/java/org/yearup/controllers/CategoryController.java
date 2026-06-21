@@ -41,7 +41,7 @@ public class CategoryController {
     @GetMapping("{categoryId}/products")
     @PreAuthorize("permitAll()")
     public List<Product> getProductsById(@PathVariable int categoryId) {
-        return productService.search(categoryId, null, null, null);
+        return productService.get(categoryId, null, null, null);
     }
 
     @PostMapping("")

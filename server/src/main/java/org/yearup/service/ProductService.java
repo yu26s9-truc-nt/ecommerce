@@ -5,10 +5,10 @@ import org.yearup.models.Product;
 import org.yearup.repository.ProductRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ProductService
-{
+public class ProductService {
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository)
@@ -16,8 +16,7 @@ public class ProductService
         this.productRepository = productRepository;
     }
 
-    public List<Product> search(Integer categoryId, Double minPrice, Double maxPrice, String subCategory)
-    {
+    public List<Product> get(Integer categoryId, Double minPrice, Double maxPrice, String subCategory) {
         List<Product> products = categoryId != null
                 ? productRepository.findByCategoryId(categoryId)
                 : productRepository.findAll();
@@ -26,7 +25,6 @@ public class ProductService
                        .filter(p -> minPrice == null || p.getPrice() >= minPrice)
                        .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
                        .filter(p -> subCategory == null || subCategory.equalsIgnoreCase(p.getSubCategory()))
-                       .filter(Product::isFeatured)
                        .toList();
     }
 
@@ -35,9 +33,8 @@ public class ProductService
         return productRepository.findByCategoryId(categoryId);
     }
 
-    public Product getById(int productId)
-    {
-        return productRepository.findById(productId).orElse(null);
+    public Optional<Product> getById(int productId) {
+        return productRepository.findById(productId);
     }
 
     public Product create(Product product)
