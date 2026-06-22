@@ -1,11 +1,9 @@
 package org.yearup.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.yearup.models.Profile;
 import org.yearup.models.User;
 import org.yearup.service.ProfileService;
@@ -34,6 +32,19 @@ public class ProfileController {
         int userId = user.getId();
 
         return profileService.getByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping()
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<Profile> updateProfile(Principal principal, @Valid @RequestBody Profile updatingProfile) {
+        String userName = principal.getName();
+
+        User user = userService.getByUserName(userName);
+        int userId = user.getId();
+
+        return profileService.update(userId, updatingProfile)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
