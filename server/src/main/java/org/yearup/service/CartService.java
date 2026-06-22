@@ -1,6 +1,6 @@
 package org.yearup.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.yearup.dtos.CartItemDTO;
 import org.yearup.dtos.CartItemUpdateDTO;
