@@ -28,6 +28,7 @@ CREATE TABLE option_group_rules (
     mode VARCHAR(100),
     condition_map JSON,
     config JSON,
+    PRIMARY KEY (option_group_rule_id),
     FOREIGN KEY (option_group_id) REFERENCES option_groups(option_group_id),
     FOREIGN KEY (option_id) REFERENCES options(option_id)
 );
