@@ -1,7 +1,9 @@
-package org.yearup.models;
+package org.yearup.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.yearup.models.authentication.Authority;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.yearup.dto.authentication.Authority;
 
 import jakarta.persistence.*;
 import java.util.HashSet;
@@ -17,14 +19,19 @@ public class User {
    @Column(name = "user_id")
    private int id;
 
-   @Column(name = "username")
+   @NotBlank
+   @Size(max = 50)
+   @Column(name = "username", nullable = false, length = 50, unique = true)
    private String username;
 
    @JsonIgnore
-   @Column(name = "hashed_password")
+   @NotBlank
+   @Column(name = "hashed_password", nullable = false)
    private String password;
 
-   @Column(name = "role")
+   @NotBlank
+   @Size(max = 20)
+   @Column(name = "role", nullable = false, length = 20)
    private String role;
 
    @JsonIgnore

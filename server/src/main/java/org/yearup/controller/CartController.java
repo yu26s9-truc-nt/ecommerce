@@ -31,8 +31,7 @@ public class CartController {
         // get the currently logged in username
         String userName = principal.getName();
         // find database user by username
-        User user = userService.getByUserName(userName);
-        int userId = user.getId();
+        int userId = userService.getIdByUsername(userName);
 
         return cartService.getCart(userId);
     }
@@ -41,8 +40,7 @@ public class CartController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CartDTO> addCartItem(Principal principal, @PathVariable int productId) {
         String userName = principal.getName();
-        User user = userService.getByUserName(userName);
-        int userId = user.getId();
+        int userId = userService.getIdByUsername(userName);
 
         CartDTO cart = cartService.addCartItem(userId, productId);
         return ResponseEntity.status(HttpStatus.CREATED).body(cart);
@@ -52,8 +50,7 @@ public class CartController {
     @PreAuthorize("isAuthenticated()")
     public CartDTO updateCartItem(Principal principal, @PathVariable int productId, @Valid @RequestBody CartItemUpdateDTO updatingCartItem) {
         String userName = principal.getName();
-        User user = userService.getByUserName(userName);
-        int userId = user.getId();
+        int userId = userService.getIdByUsername(userName);
 
         return cartService.updateCartItem(userId, productId, updatingCartItem);
     }
@@ -62,8 +59,7 @@ public class CartController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> deleteCart(Principal principal) {
         String userName = principal.getName();
-        User user = userService.getByUserName(userName);
-        int userId = user.getId();
+        int userId = userService.getIdByUsername(userName);
 
         cartService.deleteCart(userId);
         return ResponseEntity.ok().build();

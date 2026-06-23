@@ -1,7 +1,7 @@
-package org.yearup.models.authentication;
+package org.yearup.dto.authentication;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.yearup.models.User;
+import org.yearup.model.User;
 
 /*
     The acronym DTO is being used for "data transfer object". It means that this type of class is specifically
@@ -9,12 +9,12 @@ import org.yearup.models.User;
     pass to the server for a login endpoint, and TokenDto represents the object that's returned from the server
     to the client from a login endpoint.
  */
-public class LoginResponseDto {
+public class LoginResponseDTO {
 
     private String token;
     private User user;
 
-    public LoginResponseDto(String token, User user) {
+    public LoginResponseDTO(String token, User user) {
         this.token = token;
         this.user = user;
     }
