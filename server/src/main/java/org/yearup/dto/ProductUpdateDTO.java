@@ -1,35 +1,51 @@
-package org.yearup.dtos;
+package org.yearup.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import org.yearup.model.Product;
+
+import java.math.BigDecimal;
 
 public class ProductUpdateDTO {
     @Size(min = 1, max = 100)
     private String name;
 
     @PositiveOrZero
-    private Double price;
+    private BigDecimal price;
 
     private Integer categoryId;
 
     @Size(max = 500)
     private String description;
 
+    @Size(max = 100)
     private String subCategory;
 
-    @Min(0)
+    @PositiveOrZero
     private Integer stock;
 
     private Boolean featured;
 
+    @Size(max = 255)
     private String imageUrl;
+
+    public ProductUpdateDTO(Product product) {
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.categoryId = product.getCategoryId();
+        this.description = product.getDescription();
+        this.subCategory = product.getSubCategory();
+        this.stock = product.getStock();
+        this.featured = product.getFeatured();
+        this.imageUrl = product.getImageUrl();
+    }
 
     public String getName() {
         return name;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

@@ -1,10 +1,12 @@
 package org.yearup.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.yearup.dtos.ProductUpdateDTO;
-import org.yearup.models.Product;
+import org.yearup.dto.ProductUpdateDTO;
+import org.yearup.model.Product;
 import org.yearup.repository.ProductRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,47 +19,33 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> get(Integer categoryId, Double minPrice, Double maxPrice, String subCategory) {
+    public List<Product> get(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String subCategory) {
         List<Product> products = categoryId != null
-                ? productRepository.findByCategoryId(categoryId)
+                ? productRepository.getByCategoryId(categoryId)
                 : productRepository.findAll();
 
         return products.stream()
-                       .filter(p -> minPrice == null || p.getPrice() >= minPrice)
-                       .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
+                       .filter(p -> minPrice == null || p.getPrice().compareTo(minPrice) >= 0)
+                       .filter(p -> maxPrice == null || p.getPrice().compareTo(maxPrice) <= 0)
                        .filter(p -> subCategory == null || subCategory.equalsIgnoreCase(p.getSubCategory()))
                        .toList();
     }
 
-    public List<Product> listByCategoryId(int categoryId)
-    {
-        return productRepository.findByCategoryId(categoryId);
-    }
-
-    public Optional<Product> getById(int productId) {
-        return productRepository.findById(productId);
+    public Product getById(int productId) {
+        return productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product not found"));
     }
 
     public Product create(Product creatingProduct) {
         return productRepository.save(creatingProduct);
     }
 
-    public Optional<Product> update(int productId, ProductUpdateDTO updatingProduct) {
-        return productRepository.findById(productId).map(product -> {
-            if (updatingProduct.getName() != null) product.setName(updatingProduct.getName());
-            if (updatingProduct.getPrice() != null) product.setPrice(updatingProduct.getPrice());
-            if (updatingProduct.getCategoryId() != null) product.setCategoryId(updatingProduct.getCategoryId());
-            if (updatingProduct.getDescription() != null) product.setDescription(updatingProduct.getDescription());
-            if (updatingProduct.getSubCategory() != null) product.setSubCategory(updatingProduct.getSubCategory());
-            if (updatingProduct.getStock() != null) product.setStock(updatingProduct.getStock());
-            if (updatingProduct.getSubCategory() != null) product.setFeatured(updatingProduct.getFeatured());
-            if (updatingProduct.getImageUrl() != null) product.setImageUrl(updatingProduct.getImageUrl());
-            return productRepository.save(product);
-        });
+    public Product update(int productId, ProductUpdateDTO updatingProduct) {
+        Product product = this.getById(productId);
+        product.applyUpdate(updatingProduct);
+        return productRepository.save(product);
     }
 
-    public void delete(int productId)
-    {
+    public void delete(int productId) {
         productRepository.deleteById(productId);
     }
 }
