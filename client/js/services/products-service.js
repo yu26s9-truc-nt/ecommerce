@@ -12,7 +12,7 @@ class ProductService {
         subCategory: undefined,
         queryString: () => {
             let qs = "";
-            if(this.filter.cat){ qs = `cat=${this.filter.cat}`; }
+            if(this.filter.cat){ qs = `categoryId=${this.filter.cat}`; }
             if(this.filter.minPrice)
             {
                 const minP = `minPrice=${this.filter.minPrice}`;
