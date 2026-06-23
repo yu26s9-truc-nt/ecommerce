@@ -1,12 +1,13 @@
-package org.yearup.controllers;
+package org.yearup.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.yearup.models.Category;
-import org.yearup.models.Product;
+import org.yearup.dto.CategoryUpdateDTO;
+import org.yearup.model.Category;
+import org.yearup.model.Product;
 import org.yearup.service.CategoryService;
 import org.yearup.service.ProductService;
 
@@ -24,18 +25,16 @@ public class CategoryController {
         this.productService = productService;
     }
 
-    @GetMapping("")
+    @GetMapping()
     @PreAuthorize("permitAll()")
-    public List<Category> getAll() {
-        return categoryService.getAll();
+    public List<Category> get() {
+        return categoryService.get();
     }
 
     @GetMapping("/{categoryId}")
     @PreAuthorize("permitAll()")
-    public ResponseEntity<Category> getById(@PathVariable int categoryId) {
-        return categoryService.getById(categoryId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public Category getById(@PathVariable int categoryId) {
+        return categoryService.getById(categoryId);
     }
 
     @GetMapping("{categoryId}/products")
@@ -44,28 +43,30 @@ public class CategoryController {
         return productService.get(categoryId, null, null, null);
     }
 
-    @PostMapping("")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> createCategory(@Valid @RequestBody Category creatingCategory) {
+    @PostMapping()
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Category> create(@Valid @RequestBody Category creatingCategory) {
         Category createdCategory = categoryService.create(creatingCategory);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
     }
 
+    @PutMapping("/{categoryId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Category updateFull(@PathVariable int categoryId, @Valid @RequestBody Category updatingCategory) {
+        return categoryService.update(categoryId, new CategoryUpdateDTO(updatingCategory));
+    }
+
     @PatchMapping("/{categoryId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> updateCategory(@PathVariable int categoryId, @RequestBody Category updatingCategory) {
-        return categoryService.update(categoryId, updatingCategory)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @PreAuthorize("hasRole('ADMIN')")
+    public Category updatePartial(@PathVariable int categoryId, @Valid @RequestBody CategoryUpdateDTO updatingCategory) {
+        return categoryService.update(categoryId, updatingCategory);
     }
 
 
     @DeleteMapping("/{categoryId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int categoryId) {
-        if (categoryService.delete(categoryId)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable int categoryId) {
+        categoryService.delete(categoryId);
+        return ResponseEntity.noContent().build();
     }
 }
