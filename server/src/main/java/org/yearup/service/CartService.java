@@ -2,12 +2,12 @@ package org.yearup.service;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import org.yearup.dtos.CartItemDTO;
-import org.yearup.dtos.CartItemUpdateDTO;
-import org.yearup.models.CartItem;
-import org.yearup.dtos.CartDTO;
-import org.yearup.models.Product;
-import org.yearup.repository.ShoppingCartRepository;
+import org.yearup.dto.CartItemDTO;
+import org.yearup.dto.CartItemUpdateDTO;
+import org.yearup.model.CartItem;
+import org.yearup.dto.CartDTO;
+import org.yearup.model.Product;
+import org.yearup.repository.CartItemRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,20 +15,20 @@ import java.util.Optional;
 @Service
 public class CartService {
     // a shopping cart is built from cart rows plus a product lookup for each row
-    private final ShoppingCartRepository shoppingCartRepository;
+    private final CartItemRepository cartItemRepository;
     private final ProductService productService;
 
-    public CartService(ShoppingCartRepository shoppingCartRepository, ProductService productService) {
-        this.shoppingCartRepository = shoppingCartRepository;
+    public CartService(CartItemRepository cartItemRepository, ProductService productService) {
+        this.cartItemRepository = cartItemRepository;
         this.productService = productService;
     }
 
     public List<CartItem> getByUserId(int userId) {
-        return shoppingCartRepository.findByUserId(userId);
+        return cartItemRepository.getByUserId(userId);
     }
 
     public CartDTO getCart(int userId) {
-        List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
+        List<CartItem> cartItems = this.getByUserId(userId);
 
         CartDTO cart = new CartDTO();
 
@@ -40,55 +40,42 @@ public class CartService {
     }
 
     public CartDTO addCartItem(int userId, int productId) {
-        Optional<CartItem> existingCartItem = shoppingCartRepository.findByUserIdAndProduct_ProductId(userId, productId);
-        existingCartItem.ifPresentOrElse(
-                cartItem -> {
-                    cartItem.setQuantity(cartItem.getQuantity() + 1);
-                    shoppingCartRepository.save(cartItem);
-                },
-                () -> {
-                    Product product = productService.getById(productId)
-                            .orElseThrow();
-
-                    CartItem cartItem = new CartItem();
-                    cartItem.setUserId(userId);
-                    cartItem.setProduct(product);
-
-                    shoppingCartRepository.save(cartItem);
-                }
-        );
+        CartItem cartItem = cartItemRepository
+                .getByUserIdAndProduct_ProductId(userId, productId)
+                .orElseGet(() -> {
+                    Product product = productService.getById(productId);
+                    return new CartItem(userId, product, 0);
+                });
+        cartItem.setQuantity(cartItem.getQuantity() + 1);
+        cartItemRepository.save(cartItem);
 
         return getCart(userId);
     }
 
     public CartDTO updateCartItem(int userId, int productId, CartItemUpdateDTO updatingCartItem) {
-        Optional<CartItem> existingCartItem = shoppingCartRepository.findByUserIdAndProduct_ProductId(userId, productId);
-        existingCartItem.ifPresentOrElse(
-                cartItem -> {
-                    if (updatingCartItem.getQuantity() != null) cartItem.setQuantity(cartItem.getQuantity() + updatingCartItem.getQuantity());
+        int newQuantity = updatingCartItem.getQuantity();
 
-                    if (cartItem.getQuantity() == 0) shoppingCartRepository.deleteById(cartItem.getCartItemId());
-                    else shoppingCartRepository.save(cartItem);
-                },
-                () -> {
-                    Product product = productService.getById(productId)
-                            .orElseThrow();
+        Optional<CartItem> existingCartItem = cartItemRepository.getByUserIdAndProduct_ProductId(userId, productId);
 
-                    CartItem cartItem = new CartItem();
-                    cartItem.setUserId(userId);
-                    cartItem.setProduct(product);
-                    if (updatingCartItem.getQuantity() != null) cartItem.setQuantity(cartItem.getQuantity() + updatingCartItem.getQuantity());
-
-                    if (cartItem.getQuantity() == 0) shoppingCartRepository.deleteById(cartItem.getCartItemId());
-                    else shoppingCartRepository.save(cartItem);
-                }
-        );
+        if (existingCartItem.isPresent()) {
+            CartItem cartItem = existingCartItem.get();
+            if (newQuantity <= 0) {
+                cartItemRepository.delete(cartItem);
+            } else {
+                cartItem.setQuantity(newQuantity);
+                cartItemRepository.save(cartItem);
+            }
+        } else if (newQuantity > 0) {
+            Product product = productService.getById(productId);
+            CartItem cartItem = new CartItem(userId, product, newQuantity);
+            cartItemRepository.save(cartItem);
+        }
 
         return getCart(userId);
     }
 
     @Transactional
     public void deleteCart(int userId) {
-        shoppingCartRepository.deleteByUserId(userId);
+        cartItemRepository.deleteByUserId(userId);
     }
 }
