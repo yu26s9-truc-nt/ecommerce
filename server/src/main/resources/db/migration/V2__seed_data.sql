@@ -1,102 +1,5 @@
-USE sys;
-
-# ---------------------------------------------------------------------- #
-# Target DBMS:           MySQL                                           #
-# Project name:          ClothingStore                                #
-# ---------------------------------------------------------------------- #
-/*DROP DATABASE IF EXISTS clothingstore;
-
-CREATE DATABASE IF NOT EXISTS clothingstore;
-
-USE clothingstore;*/
-
-# ---------------------------------------------------------------------- #
-# Tables                                                                 #
-# ---------------------------------------------------------------------- #
-
-CREATE TABLE users (
-    user_id INT NOT NULL AUTO_INCREMENT,
-    username VARCHAR(50) NOT NULL,
-    hashed_password VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL,
-    PRIMARY KEY (user_id)
-);
-
-CREATE TABLE profiles (
-    user_id INT NOT NULL,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    email VARCHAR(200) NOT NULL,
-    address VARCHAR(200) NOT NULL,
-    city VARCHAR(50) NOT NULL,
-    state VARCHAR(50) NOT NULL,
-    zip VARCHAR(20) NOT NULL,
-    PRIMARY KEY (user_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
-CREATE TABLE categories (
-    category_id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description TEXT,
-    PRIMARY KEY (category_id)
-);
-
-CREATE TABLE products (
-    product_id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    category_id INT NOT NULL,
-    description TEXT,
-    subcategory VARCHAR(20),
-    image_url VARCHAR(200),
-    stock INT NOT NULL DEFAULT 0,
-    featured BOOL NOT NULL DEFAULT 0,
-    PRIMARY KEY (product_id),
-    FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);
-
-CREATE TABLE orders (
-    order_id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    date DATETIME NOT NULL,
-    address VARCHAR(100) NOT NULL,
-    city VARCHAR(50) NOT NULL,
-    state VARCHAR(50) NOT NULL,
-    zip VARCHAR(20) NOT NULL,
-    shipping_amount DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    PRIMARY KEY (order_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
-);
-
-CREATE TABLE order_line_items (
-    order_line_item_id INT NOT NULL AUTO_INCREMENT,
-    order_id INT NOT NULL,
-    product_id INT NOT NULL,
-    sales_price DECIMAL(10, 2) NOT NULL,
-    quantity INT NOT NULL,
-    discount DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    PRIMARY KEY (order_line_item_id),
-    FOREIGN KEY (order_id) REFERENCES orders(order_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
-
--- new tables
-CREATE TABLE shopping_cart (
-    cart_item_id INT NOT NULL AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    quantity INT NOT NULL DEFAULT 1,
-    PRIMARY KEY (cart_item_id),
-    UNIQUE KEY uq_cart_user_product (user_id, product_id),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (product_id) REFERENCES products(product_id)
-);
-
-
 /*  INSERT Users  */
-INSERT INTO users (username, hashed_password, role) 
+INSERT INTO users (username, hashed_password, role)
 VALUES  ('user','$2a$10$NkufUPF3V8dEPSZeo1fzHe9ScBu.LOay9S3N32M84yuUM2OJYEJ/.','ROLE_USER'),
         ('admin','$2a$10$lfQi9jSfhZZhfS6/Kyzv3u3418IgnWXWDQDk7IbcwlCFPgxg9Iud2','ROLE_ADMIN'),
         ('george','$2a$10$lfQi9jSfhZZhfS6/Kyzv3u3418IgnWXWDQDk7IbcwlCFPgxg9Iud2','ROLE_USER');
@@ -108,14 +11,14 @@ VALUES  (1, 'Joe', 'Joesephus', '800-555-1234', 'joejoesephus@email.com', '789 O
         (3, 'George', 'Jetson', '800-555-9876', 'george.jetson@email.com', '123 Birch Parkway','Dallas','TX','75051')     ;
 
 /* INSERT Categories */
-INSERT INTO categories (name, description) 
+INSERT INTO categories (name, description)
 VALUES  ('Tops', 'T-shirts, hoodies, sweaters, jackets, and other upper body clothing.'),
         ('Bottoms', 'Jeans, pants, shorts, skirts, and other lower body clothing.'),
         ('Shoes', 'Sneakers, boots, dress shoes, sandals, and all footwear.');
 
 /* INSERT Products */
 -- Tops (Category 1)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory) 
+INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
 VALUES  ('ButterGoods Classic Logo Hoodie', 89.99, 1, 'Australian streetwear brand with quality construction.', 'buttergoods-hoodie.jpg', 25, 1, 'Black'),
         ('Champion Powerblend Hoodie', 54.99, 1, 'Classic athletic hoodie with C logo.', 'champion-hoodie.jpg', 40, 1, 'Gray'),
         ('Plain White T-Shirt', 19.99, 1, 'Basic cotton crew neck t-shirt.', 'white-tshirt.jpg', 100, 1, 'White'),
@@ -131,27 +34,27 @@ VALUES  ('ButterGoods Classic Logo Hoodie', 89.99, 1, 'Australian streetwear bra
         ('Long Sleeve Shirt', 32.99, 1, 'Basic long sleeve cotton shirt.', 'long-sleeve-shirt.jpg', 55, 0, 'Gray'),
         ('Cardigan Sweater', 64.99, 1, 'Open-front knit cardigan.', 'cardigan.jpg', 30, 0, 'Beige'),
         ('Blouse', 39.99, 1, 'Elegant button-up blouse.', 'blouse.jpg', 40, 0, 'White'),
-        
-        
+
+
         ('Floral Dress', 64.99, 1, 'Pretty dress with floral print.', 'floral-dress.jpg', 20, 0, 'Pink'),
         ('Wrap Dress', 69.99, 1, 'Flattering wrap-style dress.', 'wrap-dress.jpg', 25, 1, 'Navy'),
         ('Jean Jacket', 74.99, 1, 'Classic denim jacket for women.', 'womens-jean-jacket.jpg', 30, 0, 'Blue');
 
 -- Bottoms (Category 2)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory) 
+INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
 VALUES  ('Blue Jeans', 69.99, 2, 'Classic straight-fit denim jeans.', 'blue-jeans.jpg', 50, 1, 'Blue'),
         ('Black Jeans', 69.99, 2, 'Modern black denim jeans.', 'black-jeans.jpg', 45, 1, 'Black'),
         ('High-Waisted Jeans', 74.99, 2, 'Modern high-rise skinny jeans.', 'high-waist-jeans.jpg', 45, 1, 'Blue'),
         ('Khaki Chinos', 54.99, 2, 'Casual dress pants in khaki color.', 'khaki-chinos.jpg', 40, 0, 'Khaki'),
         ('Track Pants', 49.99, 2, 'Comfortable athletic sweatpants.', 'track-pants.jpg', 35, 0, 'Black'),
-        
+
         ('Denim Shorts', 34.99, 2, 'Classic mid-rise denim shorts.', 'denim-shorts.jpg', 50, 0, 'Blue'),
-        
-        
+
+
 
         ('Dress Pants', 54.99, 2, 'Formal trousers for business occasions.', 'dress-pants.jpg', 30, 0, 'Charcoal'),
         ('Sweatpants', 44.99, 2, 'Comfortable cotton blend sweatpants.', 'sweatpants.jpg', 40, 0, 'Gray'),
-        
+
         ('Cargo Pants', 59.99, 2, 'Utility pants with multiple pockets.', 'cargo-pants.jpg', 25, 0, 'Olive'),
         ('Athletic Shorts', 29.99, 2, 'Performance shorts for working out.', 'athletic-shorts.jpg', 50, 0, 'Black'),
         ('Pleated Skirt', 44.99, 2, 'Classic pleated school-style skirt.', 'pleated-skirt.jpg', 30, 0, 'Navy'),
@@ -161,7 +64,7 @@ VALUES  ('Blue Jeans', 69.99, 2, 'Classic straight-fit denim jeans.', 'blue-jean
         ('Bermuda Shorts', 39.99, 2, 'Knee-length casual shorts.', 'bermuda-shorts.jpg', 45, 0, 'Tan');
 
 -- Shoes (Category 3)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory) 
+INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
 VALUES  ('Adidas Campus Sneakers', 89.99, 3, 'Retro suede sneakers with three stripes branding.', 'adidas-campus.jpg', 35, 1, 'Green'),
         ('Reebok Classic Leather', 79.99, 3, 'Iconic white leather sneakers with classic styling.', 'reebok-classic.jpg', 40, 1, 'White'),
         ('White Canvas Sneakers', 49.99, 3, 'Basic canvas lace-up sneakers.', 'white-canvas-shoes.jpg', 60, 1, 'White'),
@@ -190,6 +93,6 @@ VALUES  ('ButterGoods Classic Logo Hoodie', 94.99, 1, 'Limited edition ButterGoo
         ('Adidas Campus Sneakers', 94.99, 3, 'Retro suede sneakers in navy colorway.', 'adidas-campus.jpg', 25, 0, 'Navy');
 
 -- add shopping cart items
-INSERT INTO shopping_cart (user_id, product_id, quantity)
+INSERT INTO cart_items (user_id, product_id, quantity)
 VALUES  (3, 8, 1),
         (3, 10, 1);
