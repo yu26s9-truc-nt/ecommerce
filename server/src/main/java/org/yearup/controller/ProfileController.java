@@ -1,11 +1,13 @@
-package org.yearup.controllers;
+package org.yearup.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.yearup.models.Profile;
-import org.yearup.models.User;
+import org.yearup.dto.ProductUpdateDTO;
+import org.yearup.model.Product;
+import org.yearup.model.Profile;
+import org.yearup.model.User;
 import org.yearup.service.ProfileService;
 import org.yearup.service.UserService;
 
@@ -24,28 +26,24 @@ public class ProfileController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Profile> getProfile(Principal principal) {
+    @PreAuthorize("isAuthenticated()")
+    public Profile getProfile(Principal principal) {
         String userName = principal.getName();
 
         User user = userService.getByUserName(userName);
         int userId = user.getId();
 
-        return profileService.getByUserId(userId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return profileService.getByUserId(userId);
     }
 
-    @PatchMapping()
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Profile> updateProfile(Principal principal, @Valid @RequestBody Profile updatingProfile) {
+    @PatchMapping
+    @PreAuthorize("isAuthenticated()")
+    public Profile updateFull(Principal principal, @Valid @RequestBody Profile updatingProfile) {
         String userName = principal.getName();
 
         User user = userService.getByUserName(userName);
         int userId = user.getId();
 
-        return profileService.update(userId, updatingProfile)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return profileService.update(userId, updatingProfile);
     }
 }

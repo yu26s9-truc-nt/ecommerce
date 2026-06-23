@@ -1,50 +1,43 @@
 package org.yearup.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.yearup.models.User;
+import org.yearup.model.User;
 import org.yearup.repository.UserRepository;
 
 import java.util.List;
 
 @Service
-public class UserService
-{
+public class UserService {
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository)
-    {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAll()
-    {
+    public List<User> get() {
         return userRepository.findAll();
     }
 
-    public User getUserById(int userId)
-    {
+    public User getUserById(int userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User getByUserName(String username)
-    {
-        return userRepository.findByUsername(username);
+    public User getByUserName(String username) {
+        return userRepository.getByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
-    public int getIdByUsername(String username)
-    {
-        User user = userRepository.findByUsername(username);
-        return user != null ? user.getId() : -1;
+    public int getIdByUsername(String username) {
+        User user = this.getByUserName(username);
+        return user.getId();
     }
 
-    public boolean exists(String username)
-    {
+    public boolean exists(String username) {
         return userRepository.existsByUsername(username);
     }
 
-    public User create(User user)
-    {
+    public User create(User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

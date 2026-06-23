@@ -1,9 +1,14 @@
-package org.yearup.models;
+package org.yearup.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
@@ -13,26 +18,51 @@ public class Order {
     @Column(name = "order_id")
     private int orderId;
 
-    @Column(name = "user_id")
-    private int userId;
+    @NotNull
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
 
-    @Column(name = "date")
-    private LocalDate date;
+    @NotNull
+    @Column(name = "date", nullable = false)
+    private LocalDateTime date;
 
-    @Column(name = "address")
+    @NotBlank
+    @Size(max = 255)
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "city")
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "city", nullable = false)
     private String city;
 
-    @Column(name = "state")
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "state", nullable = false)
     private String state;
 
-    @Column(name = "zip")
+    @NotBlank
+    @Size(max = 20)
+    @Column(name = "zip", nullable = false)
     private String zip;
 
-    @Column(name = "shipping_amount")
+    @NotNull
+    @DecimalMin("0.0")
+    @Column(name = "shipping_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal shippingAmount;
+
+    public Order() {
+    }
+
+    public Order(int userId, LocalDateTime date, String address, String city, String state, String zip, BigDecimal shippingAmount) {
+        this.userId = userId;
+        this.date = date;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.shippingAmount = shippingAmount;
+    }
 
     public int getOrderId() {
         return orderId;
@@ -50,11 +80,11 @@ public class Order {
         this.userId = userId;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

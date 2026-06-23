@@ -2,7 +2,7 @@ package org.yearup.security;
 
 
 import org.yearup.service.UserService;
-import org.yearup.models.User;
+import org.yearup.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;

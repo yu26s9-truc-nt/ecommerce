@@ -1,6 +1,9 @@
-package org.yearup.models;
+package org.yearup.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
@@ -12,20 +15,38 @@ public class OrderLineItem {
     @Column(name = "order_line_item_id")
     private int orderLineItemId;
 
-    @Column(name = "order_id")
-    private int orderId;
+    @NotNull
+    @Column(name = "order_id", nullable = false)
+    private Integer orderId;
 
-    @Column(name = "product_id")
-    private int productId;
+    @NotNull
+    @Column(name = "product_id", nullable = false)
+    private Integer productId;
 
-    @Column(name = "sales_price")
+    @NotNull
+    @DecimalMin("0.0")
+    @Column(name = "sales_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal salesPrice;
 
-    @Column(name = "quantity")
-    private int quantity;
+    @NotNull
+    @Positive
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
-    @Column(name = "discount")
+    @DecimalMin("0.0")
+    @Column(name = "discount", precision = 10, scale = 2)
     private BigDecimal discount;
+
+    public OrderLineItem() {
+    }
+
+    public OrderLineItem(int orderId, int productId, BigDecimal salesPrice, int quantity, BigDecimal discount) {
+        this.orderId = orderId;
+        this.productId = productId;
+        this.salesPrice = salesPrice;
+        this.quantity = quantity;
+        this.discount = discount;
+    }
 
     public int getOrderLineItemId() {
         return orderLineItemId;

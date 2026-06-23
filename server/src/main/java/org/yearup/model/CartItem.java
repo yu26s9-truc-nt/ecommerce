@@ -1,24 +1,39 @@
-package org.yearup.models;
+package org.yearup.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
-@Table(name = "shopping_cart")
+@Table(name = "cart_items")
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_item_id")
     private int cartItemId;
 
-    @Column(name = "user_id")
-    private int userId;
+    @NotNull
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
 
-    @ManyToOne()
-    @JoinColumn(name = "product_id")
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "quantity")
-    private int quantity = 1;
+    @NotNull
+    @Positive
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity = 1;
+
+    public CartItem() {
+    }
+
+    public CartItem(int userId, Product product, int quantity) {
+        this.userId = userId;
+        this.product = product;
+        this.quantity = quantity;
+    }
 
     public int getCartItemId() {
         return cartItemId;

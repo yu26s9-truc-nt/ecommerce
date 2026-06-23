@@ -1,4 +1,4 @@
-package org.yearup.models.authentication;
+package org.yearup.dto.authentication;
 
 import jakarta.validation.constraints.NotEmpty;
 /*
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
     pass to the server for a login endpoint, and TokenDto represents the object that's returned from the server
     to the client from a login endpoint.
  */
-public class RegisterUserDto {
+public class RegisterUserDTO {
 
     @NotEmpty
     private String username;

@@ -1,7 +1,9 @@
 package org.yearup.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.yearup.models.Category;
+import org.yearup.dto.CategoryUpdateDTO;
+import org.yearup.model.Category;
 import org.yearup.repository.CategoryRepository;
 
 import java.util.List;
@@ -15,31 +17,25 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> getAll() {
+    public List<Category> get() {
         return categoryRepository.findAll();
     }
 
-    public Optional<Category> getById(int categoryId) {
-        return categoryRepository.findById(categoryId);
+    public Category getById(int categoryId) {
+        return categoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException("Category not found"));
     }
 
     public Category create(Category creatingCategory) {
         return categoryRepository.save(creatingCategory);
     }
 
-    public Optional<Category> update(int categoryId, Category updatingCategory) {
-        return categoryRepository.findById(categoryId).map(category -> {
-            if (updatingCategory.getName() != null) category.setName(updatingCategory.getName());
-            if (updatingCategory.getDescription() != null) category.setDescription(updatingCategory.getDescription());
-            return categoryRepository.save(category);
-        });
+    public Category update(int categoryId, CategoryUpdateDTO updatingCategory) {
+        Category category = this.getById(categoryId);
+        category.applyUpdate(updatingCategory);
+        return categoryRepository.save(category);
     }
 
-    public boolean delete(int categoryId) {
-        if (categoryRepository.existsById(categoryId)) {
-            categoryRepository.deleteById(categoryId);
-            return true;
-        }
-        return false;
+    public void delete(int categoryId) {
+        categoryRepository.deleteById(categoryId);
     }
 }
