@@ -2,7 +2,7 @@ package org.yearup.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.yearup.models.Profile;
+import org.yearup.model.Profile;
 
 import java.util.Optional;
 
