@@ -2,16 +2,29 @@ import { StatusCodes } from "http-status-codes";
 
 import request from "./axios";
 
-type SignUpRequest = {
-    email: string;
-    username: string;
-    password: string;
+export type Authority = {
+    name: string;
 };
 
-export const signUp = (data: SignUpRequest) =>
-    request<SignUpRequest, string>(
+export type User = {
+    id: number;
+    username: string;
+    authorities: Authority[];
+};
+
+type RegisterRequest = {
+    username: string;
+    password: string;
+    confirmPassword: string;
+    role: "USER" | "ADMIN";
+};
+
+type RegisterResponse = User;
+
+export const register = (data: RegisterRequest) =>
+    request<RegisterRequest, RegisterResponse>(
         {
-            url: "auth/sign-up",
+            url: "register",
             method: "post",
             data,
         },
@@ -22,15 +35,20 @@ export const signUp = (data: SignUpRequest) =>
         }
     );
 
-type SignInRequest = {
-    email: string;
+type LoginRequest = {
+    username: string;
     password: string;
 };
 
-export const signIn = (data: SignInRequest) =>
-    request<SignInRequest, string>(
+type LoginResponse = {
+    token: string;
+    user: User;
+};
+
+export const login = (data: LoginRequest) =>
+    request<LoginRequest, LoginResponse>(
         {
-            url: "auth/sign-in",
+            url: "login",
             method: "post",
             data,
         },
@@ -38,7 +56,14 @@ export const signIn = (data: SignInRequest) =>
             [StatusCodes.NOT_FOUND]: {
                 title: "User not found",
             },
-        }
+            [StatusCodes.UNAUTHORIZED]: {
+                title: "Invalid username or password",
+            },
+            [StatusCodes.OK]: {
+                title: "Login successfully!!",
+            },
+        },
+        true
     );
 
 export const getAccessToken = () =>
@@ -50,9 +75,3 @@ export const getAccessToken = () =>
         undefined,
         false
     );
-
-export const signOut = () =>
-    request<undefined, string>({
-        url: "auth/sign-out",
-        method: "post",
-    });

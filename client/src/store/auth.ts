@@ -1,35 +1,70 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: {
-    userID: number | undefined | null;
+import type { User } from "@/api/auth";
+
+type AuthState = {
+    userID: number | null;
     username: string;
-    avatar: string;
-    email: string;
-    fkRole: number[];
-} = {
-    userID: undefined,
+    authorities: string[];
+    isAuthenticated: boolean;
+};
+
+const initialState: AuthState = {
+    userID: null,
     username: "",
-    avatar: "",
-    email: "",
-    fkRole: [],
+    authorities: [],
+    isAuthenticated: false,
+};
+
+type LoginPayload = {
+    token: string;
+    user: User;
+};
+
+type StoredLoginPayload = {
+    token: string;
+    username: string;
+    authorities: string[];
 };
 
 const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        setSignIn(state, payload) {
-            const accessToken = payload.payload;
+        setLogin(state, action: PayloadAction<LoginPayload>) {
+            const { token, user } = action.payload;
+
+            localStorage.setItem("accessToken", token);
+
+            state.userID = user.id;
+            state.username = user.username;
+            state.authorities = user.authorities.map(
+                (authority) => authority.name
+            );
+            state.isAuthenticated = true;
         },
-        setSignOut() {
+
+        loadStoredLogin(state, action: PayloadAction<StoredLoginPayload>) {
+            const { token, username, authorities } = action.payload;
+
+            localStorage.setItem("accessToken", token);
+
+            state.userID = null;
+            state.username = username;
+            state.authorities = authorities;
+            state.isAuthenticated = true;
+        },
+
+        setLogout(state) {
             localStorage.removeItem("accessToken");
-            return {
-                ...initialState,
-                userID: null,
-            };
+
+            state.userID = null;
+            state.username = "";
+            state.authorities = [];
+            state.isAuthenticated = false;
         },
     },
 });
 
-export const { setSignIn, setSignOut } = authSlice.actions;
+export const { loadStoredLogin, setLogin, setLogout } = authSlice.actions;
 export default authSlice.reducer;

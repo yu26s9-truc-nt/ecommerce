@@ -1,5 +1,6 @@
 "use client";
 
+import LoginForm from "@/components/forms/LoginForm";
 import {
     Dialog,
     DialogContent,
@@ -7,30 +8,13 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import LoginForm from "@/components/forms/LoginForm";
 
 type AuthDialogProps = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    name: string;
-    email: string;
-    onNameChange: (value: string) => void;
-    onEmailChange: (value: string) => void;
-    onSignIn: () => void;
 };
 
-export default function AuthDialog({
-    open,
-    onOpenChange,
-    name,
-    email,
-    onNameChange,
-    onEmailChange,
-    onSignIn,
-}: AuthDialogProps) {
+export default function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md">
@@ -40,18 +24,11 @@ export default function AuthDialog({
                     </DialogTitle>
 
                     <DialogDescription>
-                        Sign in to view your order history.
+                        Login to view your order history.
                     </DialogDescription>
                 </DialogHeader>
 
-                <LoginForm
-                    defaultValues={{ name, email }}
-                    onSubmit={(values) => {
-                        onNameChange(values.name);
-                        onEmailChange(values.email);
-                        onSignIn();
-                    }}
-                />
+                <LoginForm onOpenChange={onOpenChange} />
             </DialogContent>
         </Dialog>
     );

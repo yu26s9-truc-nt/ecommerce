@@ -2,8 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { z } from "zod";
 
+import { login } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -14,44 +16,69 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { setLogin } from "@/store/auth";
 
 const loginSchema = z.object({
-    name: z.string().trim().min(2, "Name must be at least 2 characters."),
-    email: z.string().trim().email("Please enter a valid email address."),
+    username: z
+        .string()
+        .trim()
+        .min(2, "Username must be at least 2 characters."),
+    password: z
+        .string()
+        .trim()
+        .min(6, "Password must be at least 6 characters."),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
-type LoginFormProps = {
-    defaultValues?: Partial<LoginFormValues>;
-    onSubmit: (values: LoginFormValues) => void | Promise<void>;
+type Props = {
+    onOpenChange?: (open: boolean) => void;
 };
 
-export default function LoginForm({ defaultValues, onSubmit }: LoginFormProps) {
+export default function LoginForm({ onOpenChange }: Props) {
+    const dispatch = useDispatch();
+
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            name: defaultValues?.name ?? "",
-            email: defaultValues?.email ?? "",
+            username: "",
+            password: "",
         },
     });
+
+    const onSubmit = async (values: LoginFormValues) => {
+        try {
+            const res = await login(values);
+
+            dispatch(
+                setLogin({
+                    token: res.data.token,
+                    user: res.data.user,
+                })
+            );
+
+            form.reset();
+
+            onOpenChange?.(false);
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
+    };
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="username"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel className="mb-[0.3rem] block text-[0.78rem] font-bold uppercase tracking-[0.5px] text-dbrown">
-                                Name
+                                Username
                             </FormLabel>
-
                             <FormControl>
-                                <Input placeholder="Your name" {...field} />
+                                <Input placeholder="Your username" {...field} />
                             </FormControl>
-
                             <FormMessage />
                         </FormItem>
                     )}
@@ -59,21 +86,19 @@ export default function LoginForm({ defaultValues, onSubmit }: LoginFormProps) {
 
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="password"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel className="mb-[0.3rem] block text-[0.78rem] font-bold uppercase tracking-[0.5px] text-dbrown">
-                                Email
+                                Password
                             </FormLabel>
-
                             <FormControl>
                                 <Input
-                                    type="email"
-                                    placeholder="you@dolicious.com"
+                                    type="password"
+                                    placeholder="Your password"
                                     {...field}
                                 />
                             </FormControl>
-
                             <FormMessage />
                         </FormItem>
                     )}
@@ -84,12 +109,8 @@ export default function LoginForm({ defaultValues, onSubmit }: LoginFormProps) {
                     className="w-full"
                     disabled={form.formState.isSubmitting}
                 >
-                    Sign in
+                    Login
                 </Button>
-
-                <p className="text-center text-xs text-muted-foreground">
-                    Demo only — no password needed.
-                </p>
             </form>
         </Form>
     );

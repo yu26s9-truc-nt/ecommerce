@@ -1,8 +1,7 @@
 import React from "react";
-import Header from "@/components/layouts/Header";
-import Hero from "@/components/panels/HeroPanel";
-import MenuFilter from "@/components/panels/MenuFilterPanel";
+
 import Footer from "@/components/layouts/Footer";
+import Header from "@/components/layouts/Header";
 
 const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
     return (

@@ -309,60 +309,6 @@ body {
         opacity: 1;
     }
 }
-.drawer-wrap {
-    position: fixed;
-    inset: 0;
-    z-index: 70;
-    background: rgba(42, 24, 16, 0.55);
-    backdrop-filter: blur(4px);
-    display: none;
-}
-.drawer-wrap.open {
-    display: block;
-}
-.drawer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    max-width: 420px;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    animation: slideIn 0.25s ease;
-}
-@keyframes slideIn {
-    from {
-        transform: translateX(40px);
-        opacity: 0;
-    }
-    to {
-        transform: none;
-        opacity: 1;
-    }
-}
-.toast {
-    position: fixed;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--dbrown);
-    color: var(--primary-foreground);
-    padding: 0.7rem 1.2rem;
-    border-radius: 9999px;
-    font-weight: 700;
-    z-index: 200;
-    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition:
-        opacity 0.2s,
-        transform 0.2s;
-}
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-6px);
-}
 .emoji-tile {
     background: linear-gradient(135deg, #ffe6f2, #ffd6e8);
     display: grid;
@@ -398,15 +344,7 @@ details > summary::-webkit-details-marker {
 .star {
     color: #ff671f;
 }
-.hide {
-    display: none !important;
-}
-.scrolly {
-    overflow-x: auto;
-}
-.grow-1 {
-    flex: 1 1 auto;
-}
+
 .pill-rule {
     font-size: 0.65rem;
     padding: 0.1rem 0.5rem;

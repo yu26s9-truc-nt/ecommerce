@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { StatusCodes, ReasonPhrases } from "http-status-codes";
+import { ReasonPhrases, StatusCodes } from "http-status-codes";
 import { toast } from "sonner";
 
 import { getAccessToken } from "@/api/auth";
@@ -74,7 +74,7 @@ axiosDefault.interceptors.response.use(
 const request = async <D = unknown, T = unknown>(
     config: AxiosRequestConfig<D>,
     responseMessage?: Record<number, { title: string; description?: string }>,
-    showMessage = true
+    showMessage = false
 ): Promise<AxiosResponse<T>> => {
     try {
         const res = await axiosDefault.request<T, AxiosResponse<T>, D>(config);
@@ -86,7 +86,6 @@ const request = async <D = unknown, T = unknown>(
 
         if (showMessage && typeof window !== "undefined") {
             toast.success(message.title, {
-                position: "top-right",
                 description: message.description,
             });
         }
@@ -106,7 +105,6 @@ const request = async <D = unknown, T = unknown>(
 
         if (showMessage && typeof window !== "undefined") {
             toast.error(message.title, {
-                position: "top-right",
                 description: message.description,
             });
         }
