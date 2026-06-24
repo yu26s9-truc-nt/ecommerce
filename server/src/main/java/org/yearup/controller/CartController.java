@@ -15,7 +15,6 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("cart")
-@CrossOrigin
 public class CartController {
     private final CartService cartService;
     private final UserService userService;
