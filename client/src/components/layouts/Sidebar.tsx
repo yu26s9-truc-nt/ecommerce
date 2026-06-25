@@ -2,27 +2,19 @@
 
 import {
     Boxes,
-    ChartArea,
-    Compass,
     FolderTree,
-    GitBranch,
     type LucideIcon,
-    MapPin,
     Package,
-    PackageOpen,
     ShoppingBag,
-    Tags,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
     SidebarGroup,
-    SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
@@ -30,7 +22,6 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { RootState } from "@/store/store";
 
 interface IMenuItem {
@@ -66,34 +57,29 @@ const adminMenuItems: IMenuItem[] = [
     },*/
     {
         title: "Category",
-        url: "/category",
+        url: "/admin/category",
         icon: FolderTree,
-    },
-    {
-        title: "Option",
-        url: "/admin/option",
-        icon: Tags,
     },
     {
         title: "Option Group",
         url: "/admin/option-group",
         icon: Boxes,
     },
-    {
+    /*{
         title: "Rule",
         url: "/admin/rule",
         icon: GitBranch,
-    },
+    },*/
     {
         title: "Product",
         url: "/admin/product",
         icon: Package,
     },
-    {
+    /*{
         title: "Order",
         url: "/admin/order",
         icon: ShoppingBag,
-    },
+    },*/
 ];
 
 const AppSidebarMenu = () => {

@@ -1,10 +1,10 @@
 "use client";
+"use no memo";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateCategory, useUpdateCategoryFull } from "@/hooks/category";
 import { Category } from "@/models/category";
 
 const categorySchema = z.object({
@@ -27,16 +26,18 @@ const categorySchema = z.object({
 });
 
 type CategoryFormInput = z.input<typeof categorySchema>;
-type CategoryFormValues = z.output<typeof categorySchema>;
+export type CategoryFormValues = z.output<typeof categorySchema>;
 
 type CategoryFormProps = {
+    formId: string;
     category: Category | null;
-    onSubmit?: () => void;
+    onSubmit: (values: CategoryFormValues) => void | Promise<void>;
 };
 
 export default function CategoryForm({
-    category,
+    formId,
     onSubmit,
+    category,
 }: CategoryFormProps) {
     const form = useForm<CategoryFormInput, undefined, CategoryFormValues>({
         resolver: zodResolver(categorySchema),
@@ -46,38 +47,14 @@ export default function CategoryForm({
         },
     });
 
-    const { mutate: createCategory } = useCreateCategory();
-
-    const { mutate: updateCategory } = useUpdateCategoryFull(
-        category?.categoryId ?? 0
-    );
-
     const handleSubmit = async (values: CategoryFormValues) => {
-        try {
-            if (category && category.categoryId) {
-                updateCategory(values, {
-                    onSuccess: () => {
-                        form.reset();
-                        onSubmit?.();
-                    },
-                });
-            } else {
-                createCategory(values, {
-                    onSuccess: () => {
-                        form.reset();
-                        onSubmit?.();
-                    },
-                });
-            }
-            form.reset();
-        } catch (error) {
-            console.error("Category submit failed:", error);
-        }
+        await onSubmit(values);
     };
 
     return (
         <Form {...form}>
             <form
+                id={formId}
                 onSubmit={form.handleSubmit(handleSubmit)}
                 className="space-y-4"
             >
@@ -86,9 +63,7 @@ export default function CategoryForm({
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>
-                                Category Name
-                            </FormLabel>
+                            <FormLabel>Category Name</FormLabel>
                             <FormControl>
                                 <Input placeholder="Smoothies" {...field} />
                             </FormControl>
@@ -102,9 +77,7 @@ export default function CategoryForm({
                     name="description"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>
-                                Description
-                            </FormLabel>
+                            <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder="A short description for this category"
@@ -116,14 +89,6 @@ export default function CategoryForm({
                         </FormItem>
                     )}
                 />
-
-                <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={form.formState.isSubmitting}
-                >
-                    {category?.categoryId ? "Update" : "Add"} Category
-                </Button>
             </form>
         </Form>
     );

@@ -1,12 +1,11 @@
 package org.yearup.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.yearup.dto.OrderCreateRequestDTO;
 import org.yearup.model.Order;
 import org.yearup.model.User;
 import org.yearup.service.OrderService;
@@ -27,12 +26,12 @@ public class OrderController {
 
     @PostMapping()
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> createOrder(Principal principal) {
+    public ResponseEntity<?> createOrder(Principal principal, @Valid @RequestBody OrderCreateRequestDTO orderCreateRequestDTO) {
         try {
             String userName = principal.getName();
             int userId = userService.getIdByUsername(userName);
 
-            Order createdOrder = orderService.create(userId);
+            Order createdOrder = orderService.create(userId, orderCreateRequestDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
         } catch (IllegalStateException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

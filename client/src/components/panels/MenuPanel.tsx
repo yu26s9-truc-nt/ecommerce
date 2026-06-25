@@ -1,10 +1,9 @@
 "use client";
 
-import { Search, Star } from "lucide-react";
+import { Search, Star, X } from "lucide-react";
 import React from "react";
 
 import ProductCard from "@/components/cards/ProductCard";
-import PriceFilterInput from "@/components/inputs/PriceFilterInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -34,16 +33,21 @@ type Props = {
     onQuickAdd?: (id: number) => void;
 };
 
+const PRICE_MIN = 0;
+const PRICE_MAX = 100;
+
+const defaultFilters: Filters = {
+    search: "",
+    category: "all",
+    sort: "popular",
+    price: {
+        min: PRICE_MIN,
+        max: PRICE_MAX,
+    },
+};
+
 export default function MenuPanel({ onOpenProduct }: Props) {
-    const [filters, setFilters] = React.useState<Filters>({
-        search: "",
-        category: "all",
-        sort: "popular",
-        price: {
-            min: 0,
-            max: 100,
-        },
-    });
+    const [filters, setFilters] = React.useState<Filters>(defaultFilters);
 
     const { data: categories = [], isLoading: categoriesLoading } =
         useGetCategories();
@@ -113,6 +117,34 @@ export default function MenuPanel({ onOpenProduct }: Props) {
                   (category) => String(category.categoryId) === filters.category
               )?.name ?? "Category");
 
+    const isFiltered =
+        filters.search.trim() !== "" ||
+        filters.category !== "all" ||
+        filters.sort !== "popular" ||
+        filters.price.min !== PRICE_MIN ||
+        filters.price.max !== PRICE_MAX;
+
+    const resetAll = () => setFilters(defaultFilters);
+
+    const clampPrice = (n: number) =>
+        Math.min(Math.max(n, PRICE_MIN), PRICE_MAX);
+
+    const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const next = clampPrice(Number(e.target.value || 0));
+        setFilters((prev) => ({
+            ...prev,
+            price: { ...prev.price, min: Math.min(next, prev.price.max) },
+        }));
+    };
+
+    const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const next = clampPrice(Number(e.target.value || 0));
+        setFilters((prev) => ({
+            ...prev,
+            price: { ...prev.price, max: Math.max(next, prev.price.min) },
+        }));
+    };
+
     return (
         <>
             <section className="sticky top-[80px] z-30 border-b border-border bg-card/95 backdrop-blur">
@@ -163,65 +195,103 @@ export default function MenuPanel({ onOpenProduct }: Props) {
                         </Select>
                     </div>
 
-                    <div className="flex gap-2 overflow-x-auto py-1">
-                        <Button
-                            size="sm"
-                            variant={
-                                filters.category === "all"
-                                    ? "primary"
-                                    : "outline"
-                            }
-                            onClick={() =>
-                                setFilters((prev) => ({
-                                    ...prev,
-                                    category: "all",
-                                }))
-                            }
-                        >
-                            All
-                        </Button>
-
-                        {categoriesLoading ? (
-                            <Button size="sm" variant="outline" disabled>
-                                Loading categories...
+                    <div className="flex items-center justify-between gap-3">
+                        <div className="flex gap-2 overflow-x-auto py-1">
+                            <Button
+                                size="sm"
+                                variant={
+                                    filters.category === "all"
+                                        ? "primary"
+                                        : "outline"
+                                }
+                                onClick={() =>
+                                    setFilters((prev) => ({
+                                        ...prev,
+                                        category: "all",
+                                    }))
+                                }
+                            >
+                                All
                             </Button>
-                        ) : (
-                            categories.map((category) => (
-                                <Button
-                                    key={category.categoryId}
-                                    size="sm"
-                                    variant={
-                                        filters.category ===
-                                        String(category.categoryId)
-                                            ? "primary"
-                                            : "outline"
-                                    }
-                                    onClick={() =>
-                                        setFilters((prev) => ({
-                                            ...prev,
-                                            category: String(
-                                                category.categoryId
-                                            ),
-                                        }))
-                                    }
-                                >
-                                    {category.name}
+
+                            {categoriesLoading ? (
+                                <Button size="sm" variant="outline" disabled>
+                                    Loading categories...
                                 </Button>
-                            ))
+                            ) : (
+                                categories.map((category) => (
+                                    <Button
+                                        key={category.categoryId}
+                                        size="sm"
+                                        variant={
+                                            filters.category ===
+                                            String(category.categoryId)
+                                                ? "primary"
+                                                : "outline"
+                                        }
+                                        onClick={() =>
+                                            setFilters((prev) => ({
+                                                ...prev,
+                                                category: String(
+                                                    category.categoryId
+                                                ),
+                                            }))
+                                        }
+                                    >
+                                        {category.name}
+                                    </Button>
+                                ))
+                            )}
+                        </div>
+
+                        {isFiltered && (
+                            <Button
+                                size="sm"
+                                variant="ghost"
+                                className="shrink-0 text-muted-foreground"
+                                onClick={resetAll}
+                            >
+                                <X className="mr-1 size-4" />
+                                Reset all
+                            </Button>
                         )}
                     </div>
 
-                    <PriceFilterInput
-                        min={0}
-                        max={100}
-                        value={filters.price}
-                        onChange={(price) =>
-                            setFilters((prev) => ({
-                                ...prev,
-                                price,
-                            }))
-                        }
-                    />
+                    <div className="flex flex-wrap items-center gap-3 rounded-xl border bg-card px-3 py-2">
+                        <span className="text-xs font-medium text-muted-foreground">
+                            Price
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-sm text-muted-foreground">
+                                $
+                            </span>
+                            <Input
+                                type="number"
+                                min={PRICE_MIN}
+                                max={PRICE_MAX}
+                                value={filters.price.min}
+                                onChange={handleMinPriceChange}
+                                className="h-8 w-20 px-2 text-sm"
+                            />
+                        </div>
+
+                        <span className="text-muted-foreground">–</span>
+
+                        <div className="flex items-center gap-1.5">
+                            <span className="text-sm text-muted-foreground">
+                                $
+                            </span>
+                            <Input
+                                type="number"
+                                min={PRICE_MIN}
+                                max={PRICE_MAX}
+                                value={filters.price.max}
+                                onChange={handleMaxPriceChange}
+                                className="h-8 w-20 px-2 text-sm"
+                            />
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -260,9 +330,8 @@ export default function MenuPanel({ onOpenProduct }: Props) {
                                 className="cursor-pointer"
                             >
                                 <ProductCard
-                                    {...product}
-                                    rating={product.featured ? 5 : 4.5}
-                                    imageUrl={product.imageUrl ?? undefined}
+                                    product={product}
+                                    isPreview={false}
                                 />
                             </div>
                         ))}

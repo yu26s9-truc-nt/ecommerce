@@ -1,5 +1,3 @@
-// src/hooks/useGetCategories.ts
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -10,9 +8,8 @@ import {
     putCategory,
 } from "@/api/category";
 import {
-    Category,
     CategoryCreateRequest,
-    CategoryUpdateRequest
+    CategoryUpdateRequest,
 } from "@/models/category";
 
 export const useGetCategories = () => {

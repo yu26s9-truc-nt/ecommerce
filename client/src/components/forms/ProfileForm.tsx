@@ -61,15 +61,16 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
     const { mutate: updateProfile } = useUpdateProfile();
 
     const handleSubmit = (values: ProfileFormValues) => {
-        try {
-            updateProfile(values, {
-                onSuccess: () => {
-                    onSubmit?.();
-                },
-            });
-        } catch (error) {
-            console.error("Profile submit failed:", error);
-        }
+        const options = {
+            onSuccess: () => {
+                onSubmit?.();
+            },
+            onError: (error: unknown) => {
+                console.error("Option group submit failed:", error);
+            },
+        };
+
+        updateProfile(values, options);
     };
 
     return (
@@ -84,9 +85,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                         name="firstName"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    First Name
-                                </FormLabel>
+                                <FormLabel>First Name</FormLabel>
                                 <FormControl>
                                     <Input placeholder="John" {...field} />
                                 </FormControl>
@@ -100,9 +99,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                         name="lastName"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    Last Name
-                                </FormLabel>
+                                <FormLabel>Last Name</FormLabel>
                                 <FormControl>
                                     <Input placeholder="Doe" {...field} />
                                 </FormControl>
@@ -118,9 +115,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    Email
-                                </FormLabel>
+                                <FormLabel>Email</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="email"
@@ -138,9 +133,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                         name="phone"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    Phone
-                                </FormLabel>
+                                <FormLabel>Phone</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="tel"
@@ -159,14 +152,9 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                     name="address"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>
-                                Address
-                            </FormLabel>
+                            <FormLabel>Address</FormLabel>
                             <FormControl>
-                                <Input
-                                    placeholder="123 Main St"
-                                    {...field}
-                                />
+                                <Input placeholder="123 Main St" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -179,11 +167,12 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                         name="city"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    City
-                                </FormLabel>
+                                <FormLabel>City</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Springfield" {...field} />
+                                    <Input
+                                        placeholder="Springfield"
+                                        {...field}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -195,9 +184,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                         name="state"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    State
-                                </FormLabel>
+                                <FormLabel>State</FormLabel>
                                 <FormControl>
                                     <Input placeholder="IL" {...field} />
                                 </FormControl>
@@ -211,9 +198,7 @@ export default function ProfileForm({ profile, onSubmit }: ProfileFormProps) {
                         name="zip"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    Zip
-                                </FormLabel>
+                                <FormLabel>Zip</FormLabel>
                                 <FormControl>
                                     <Input placeholder="62704" {...field} />
                                 </FormControl>

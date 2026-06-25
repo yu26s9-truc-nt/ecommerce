@@ -77,7 +77,8 @@
     --bg-cancel: #fee2e2;
     --text-cancel: #b91c1c;
 
-    --secondary: oklch(0.968 0.007 247.896);
+    /*--secondary: oklch(0.968 0.007 247.896);*/
+    --secondary: #ffe6f2;
     --secondary-foreground: oklch(0.208 0.042 265.755);
 
     --muted: oklch(0.968 0.007 247.896);
@@ -142,6 +143,7 @@ body {
     background: var(--background);
     color: var(--foreground);
 }
+
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

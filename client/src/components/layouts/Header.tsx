@@ -1,18 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
-import AuthDialog from "@/components/dialogs/AuthDialog";
+import Dialog from "@/components/dialogs/FormDialog";
 import CartSheet from "@/components/sheets/CartSheet";
 import { Button } from "@/components/ui/button";
 import { useGetCart } from "@/hooks/cart";
-import { loadStoredLogin, setLogout } from "@/store/auth";
+import { setLogout } from "@/store/auth";
 import { setCart } from "@/store/cart";
 import type { RootState } from "@/store/store";
-import { useRouter } from "next/navigation";
+
+import LoginForm from "../forms/LoginForm";
+
+const DEFAULT_CART = { items: {}, total: 0 };
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -20,7 +24,7 @@ const Header = () => {
     const [cartOpen, setCartOpen] = useState(false);
     const router = useRouter();
 
-    const { isAuthenticated, authorities } = useSelector(
+    const { isAuthenticated } = useSelector(
         (state: RootState) => state.authReducer
     );
 
@@ -30,8 +34,7 @@ const Header = () => {
         0
     );
 
-    const { data: cart = { items: {}, total: 0 } } =
-        useGetCart(isAuthenticated);
+    const { data: cart = DEFAULT_CART } = useGetCart(isAuthenticated);
 
     useEffect(() => {
         if (!isAuthenticated) return;
@@ -117,7 +120,14 @@ const Header = () => {
                 </div>
             </header>
 
-            <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
+            <Dialog
+                open={authOpen}
+                onOpenChange={setAuthOpen}
+                title="Welcome back"
+                description="Login to view your order history"
+            >
+                <LoginForm onOpenChange={setAuthOpen} />
+            </Dialog>
 
             <CartSheet open={cartOpen} onOpenChange={setCartOpen} />
         </>

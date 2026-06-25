@@ -4,22 +4,22 @@ import ProfileCard from "@/components/cards/ProfileCard";
 import { useGetProfile } from "@/hooks/profile";
 
 const Page = () => {
-  const { data: profile = {
-    userId: 0,
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: ""
+    const {
+        data: profile = {
+            userId: 0,
+            firstName: "",
+            lastName: "",
+            phone: "",
+            email: "",
+            address: "",
+            city: "",
+            state: "",
+            zip: "",
+        },
+        isLoading,
+    } = useGetProfile();
 
-  }} =
-          useGetProfile();
-
-  return <ProfileCard profile={profile}/>
-
+    return <ProfileCard isLoading={isLoading} profile={profile} />;
 };
 
 export default Page;

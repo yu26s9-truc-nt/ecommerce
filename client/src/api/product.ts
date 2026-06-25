@@ -39,8 +39,8 @@ export const createProduct = (data: ProductCreateRequest) =>
         }
     );
 
-export const updateProduct = (productId: number, data: ProductCreateRequest) =>
-    request<ProductCreateRequest, Product>(
+export const putProduct = (productId: number, data: ProductUpdateRequest) =>
+    request<ProductUpdateRequest, Product>(
         {
             url: `products/${productId}`,
             method: "put",
@@ -56,8 +56,8 @@ export const updateProduct = (productId: number, data: ProductCreateRequest) =>
         }
     );
 
-export const patchProduct = (productId: number, data: ProductUpdateRequest) =>
-    request<ProductUpdateRequest, Product>(
+export const patchProduct = (productId: number, data: Product) =>
+    request<Product, Product>(
         {
             url: `products/${productId}`,
             method: "patch",

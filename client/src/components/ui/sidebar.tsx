@@ -559,7 +559,7 @@ const sidebarMenuButtonVariants = cva(
         "ring-sidebar-ring",
 
         "text-dbrown",
-        "hover:bg-[#ffe6f2]",
+        "hover:bg-secondary",
         "hover:text-primary",
 
         "data-[active=true]:bg-primary",

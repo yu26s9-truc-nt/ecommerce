@@ -9,5 +9,5 @@ export type Profile = {
     state: string;
     zip: string;
 };
- 
+
 export type ProfileUpdateRequest = Omit<Profile, "userId">;

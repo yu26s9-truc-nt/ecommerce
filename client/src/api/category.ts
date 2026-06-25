@@ -1,5 +1,3 @@
-// src/api/categories.ts
-
 import { StatusCodes } from "http-status-codes";
 
 import type {
@@ -42,10 +40,7 @@ export const createCategory = (data: CategoryCreateRequest) =>
         }
     );
 
-export const putCategory = (
-    categoryId: number,
-    data: CategoryUpdateRequest
-) =>
+export const putCategory = (categoryId: number, data: CategoryUpdateRequest) =>
     request<CategoryUpdateRequest, Category>({
         url: `categories/${categoryId}`,
         method: "put",

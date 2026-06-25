@@ -1,14 +1,15 @@
 import { StatusCodes } from "http-status-codes";
 
-import { Order } from "@/models/order";
+import { Order, OrderCreateRequest } from "@/models/order";
 
 import request from "./axios";
 
-export const createOrder = () =>
-    request<undefined, Order>(
+export const createOrder = (data: OrderCreateRequest) =>
+    request<OrderCreateRequest, Order>(
         {
             url: "orders",
             method: "post",
+            data,
         },
         {
             [StatusCodes.CREATED]: {

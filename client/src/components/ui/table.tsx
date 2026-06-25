@@ -12,7 +12,10 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
         >
             <table
                 data-slot="table"
-                className={cn("w-full caption-bottom text-sm rounded-xl bg-card text-card-foreground", className)}
+                className={cn(
+                    "w-full caption-bottom text-sm rounded-xl bg-card text-card-foreground",
+                    className
+                )}
                 {...props}
             />
         </div>
@@ -70,7 +73,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
         <th
             data-slot="table-head"
             className={cn(
-                "px-2 text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 h-12 text-primary font-bold bg-[#ffe6f2]",
+                "px-2 text-left align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 h-12 text-primary font-bold bg-secondary",
                 className
             )}
             {...props}
@@ -106,11 +109,11 @@ function TableCaption({
 
 export {
     Table,
-    TableHeader,
     TableBody,
+    TableCaption,
+    TableCell,
     TableFooter,
     TableHead,
+    TableHeader,
     TableRow,
-    TableCell,
-    TableCaption,
 };

@@ -3,11 +3,11 @@ export type Product = {
     name: string;
     price: number;
     categoryId: number;
-    description?: string | null;
-    subCategory?: string | null;
+    description: string | null;
+    subCategory: string | null;
     stock: number;
     featured: boolean;
-    imageUrl?: string | null;
+    imageUrl: string | null;
 };
 
 export type ProductFilterRequest = {
@@ -17,24 +17,5 @@ export type ProductFilterRequest = {
     subCategory?: string;
 };
 
-export type ProductCreateRequest = {
-    name: string;
-    price: string | number;
-    categoryId: number;
-    description?: string;
-    subCategory?: string;
-    stock?: number;
-    featured?: boolean;
-    imageUrl?: string;
-};
-
-export type ProductUpdateRequest = {
-    name?: string;
-    price?: string | number;
-    categoryId?: number;
-    description?: string;
-    subCategory?: string;
-    stock?: number;
-    featured?: boolean;
-    imageUrl?: string;
-};
+export type ProductCreateRequest = Omit<Product, "productId">;
+export type ProductUpdateRequest = Omit<Product, "productId">;

@@ -36,16 +36,16 @@ public class OptionGroupController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<OptionGroup> create(@Valid @RequestBody OptionGroupCreateDTO creatingOptionGroup) {
+    public ResponseEntity<OptionGroup> create(@Valid @RequestBody OptionGroup creatingOptionGroup) {
         OptionGroup createdOptionGroup = optionGroupService.create(creatingOptionGroup);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOptionGroup);
     }
 
-    @PatchMapping("{optionGroupId}")
+    @PutMapping("{optionGroupId}")
     @PreAuthorize("hasRole('ADMIN')")
     public OptionGroup updatePartial(
             @PathVariable int optionGroupId,
-            @Valid @RequestBody OptionGroupUpdateDTO updatingOptionGroup) {
+            @Valid @RequestBody OptionGroup updatingOptionGroup) {
 
         return optionGroupService.update(optionGroupId, updatingOptionGroup);
     }

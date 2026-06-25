@@ -37,8 +37,9 @@ export function CartItemCard({
                             src={product.imageUrl}
                             alt={product.name}
                             fill
-                            sizes="64px"
-                            className="object-cover"
+                            //sizes="(max-width: 1024px) 100vw, 300px"
+                            crop={{ type: "auto", source: true }}
+                            className="h-full w-full object-cover"
                         />
                     ) : (
                         <div className="flex size-full items-center justify-center text-xs text-muted-foreground">

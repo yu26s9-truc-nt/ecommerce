@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yearup.dto.OptionGroupCreateDTO;
 import org.yearup.dto.OptionGroupUpdateDTO;
-import org.yearup.model.Option;
 import org.yearup.model.OptionGroup;
-import org.yearup.model.OptionGroupOption;
-import org.yearup.repository.OptionGroupOptionRepository;
 import org.yearup.repository.OptionGroupRepository;
 
 import java.util.List;
@@ -16,13 +13,9 @@ import java.util.List;
 @Service
 public class OptionGroupService {
     private final OptionGroupRepository optionGroupRepository;
-    private final OptionGroupOptionRepository optionGroupOptionRepository;
-    private final OptionService optionService;
 
-    public OptionGroupService(OptionGroupRepository optionGroupRepository, OptionGroupOptionRepository optionGroupOptionRepository, OptionService optionService) {
+    public OptionGroupService(OptionGroupRepository optionGroupRepository) {
         this.optionGroupRepository = optionGroupRepository;
-        this.optionGroupOptionRepository = optionGroupOptionRepository;
-        this.optionService = optionService;
     }
 
     public List<OptionGroup> getAll() {
@@ -34,40 +27,20 @@ public class OptionGroupService {
     }
 
     @Transactional
-    public OptionGroup create(OptionGroupCreateDTO creatingOptionGroupCreate) {
-        OptionGroup optionGroup = new OptionGroup();
-        optionGroup.setName(creatingOptionGroupCreate.getName());
-
-        optionGroup = optionGroupRepository.save(optionGroup);
-
-        for (Integer optionId : creatingOptionGroupCreate.getOptionIds()) {
-            Option option = optionService.getById(optionId);
-
-            OptionGroupOption optionGroupOption = new OptionGroupOption(optionGroup, option);
-            optionGroupOptionRepository.save(optionGroupOption);
-        }
-
-        return optionGroup;
+    public OptionGroup create(OptionGroup creatingOptionGroup) {
+        return optionGroupRepository.save(creatingOptionGroup);
     }
 
     @Transactional
-    public OptionGroup update(int optionGroupId, OptionGroupUpdateDTO updatingOptionGroupUpdate) {
+    public OptionGroup update(int optionGroupId, OptionGroup updatingOptionGroup) {
         OptionGroup optionGroup = this.getById(optionGroupId);
 
-        if (updatingOptionGroupUpdate.getName() != null) {
-            optionGroup.setName(updatingOptionGroupUpdate.getName());
+        if (updatingOptionGroup.getName()!= null) {
+            optionGroup.setName(updatingOptionGroup.getName());
         }
 
-        if (updatingOptionGroupUpdate.getOptionIds() != null) {
-            // remove existing links
-            optionGroupOptionRepository.deleteByOptionGroup_OptionGroupId(optionGroupId);
-
-            for (Integer optionId : updatingOptionGroupUpdate.getOptionIds()) {
-                Option option = optionService.getById(optionId);
-
-                OptionGroupOption optionGroupOption = new OptionGroupOption(optionGroup, option);
-                optionGroupOptionRepository.save(optionGroupOption);
-            }
+        if (!updatingOptionGroup.getOptions().isEmpty()) {
+            optionGroup.setOptions(updatingOptionGroup.getOptions());
         }
         return optionGroupRepository.save(optionGroup);
     }

@@ -18,22 +18,20 @@ import { useAddCartItem } from "@/hooks/cart";
 import type { Product } from "@/models/product";
 import type { RootState } from "@/store/store";
 
-interface ProductCardProps extends Product {
-    rating: number;
+interface ProductCardProps {
+    product: Product;
+    rating?: number;
+    isPreview?: boolean;
 }
 
 export default function ProductCard({
-    productId,
-    name,
-    description,
-    price,
-    featured,
-    imageUrl,
+    product,
+    isPreview = true,
 }: ProductCardProps) {
     const addCartMutation = useAddCartItem();
 
     const handleAddToCart = () => {
-        addCartMutation.mutate(productId);
+        addCartMutation.mutate(product?.productId);
     };
 
     const { isAuthenticated } = useSelector(
@@ -47,22 +45,22 @@ export default function ProductCard({
                 hover:-translate-y-1
                 hover:shadow-[0_18px_40px_-16px_rgba(218,24,132,0.25)]"
         >
-            <div className="relative">
-                {imageUrl ? (
+            <div className="relative aspect-square w-full overflow-hidden bg-muted">
+                {product?.imageUrl ? (
                     <CldImage
-                        src={imageUrl}
-                        alt={name}
-                        width={400}
-                        height={400}
+                        src={product?.imageUrl}
+                        alt={product?.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         crop={{ type: "auto", source: true }}
-                        className="aspect-square w-full object-cover"
+                        className="object-cover"
                         loading="eager"
                     />
                 ) : (
                     <div className="aspect-square w-full bg-muted" />
                 )}
 
-                {featured && (
+                {product?.featured && (
                     <Badge
                         className="absolute left-3 top-3 gap-1"
                         variant="secondary"
@@ -73,9 +71,9 @@ export default function ProductCard({
                 )}
             </div>
 
-            <CardContent>
+            <CardContent className="p-5">
                 <CardHeader className="px-0">
-                    <CardTitle className="text-base">{name}</CardTitle>
+                    <CardTitle className="text-base">{product?.name}</CardTitle>
 
                     {/*<span className="flex shrink-0 items-center gap-1 text-sm font-bold text-secondary">
                         <Star className="size-4 fill-current" />
@@ -84,24 +82,26 @@ export default function ProductCard({
                 </CardHeader>
 
                 <CardDescription className="mt-1 line-clamp-2 h-10">
-                    {description}
+                    {product?.description}
                 </CardDescription>
 
                 <div className="mt-3 flex items-center justify-between">
                     <span className="text-lg font-extrabold text-primary">
-                        ${price.toFixed(2)}
+                        ${product?.price?.toFixed(2)}
                     </span>
 
-                    <Button
-                        size="icon"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            if (isAuthenticated) handleAddToCart();
-                            else toast.error("Need to login!!!");
-                        }}
-                    >
-                        <Plus className="size-5" />
-                    </Button>
+                    {!isPreview && (
+                        <Button
+                            size="icon"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                if (isAuthenticated) handleAddToCart();
+                                else toast.error("Need to login!!!");
+                            }}
+                        >
+                            <Plus className="size-5" />
+                        </Button>
+                    )}
                 </div>
             </CardContent>
         </Card>

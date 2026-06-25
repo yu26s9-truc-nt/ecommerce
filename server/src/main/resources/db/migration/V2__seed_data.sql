@@ -12,85 +12,97 @@ VALUES  (1, 'Joe', 'Joesephus', '800-555-1234', 'joejoesephus@email.com', '789 O
 
 /* INSERT Categories */
 INSERT INTO categories (name, description)
-VALUES  ('Tops', 'T-shirts, hoodies, sweaters, jackets, and other upper body clothing.'),
-        ('Bottoms', 'Jeans, pants, shorts, skirts, and other lower body clothing.'),
-        ('Shoes', 'Sneakers, boots, dress shoes, sandals, and all footwear.');
+VALUES  ('Drink', 'Some drinks'),
+        ('Bakery', 'Some bakery'),
+        ('Food', 'Some food');
 
 /* INSERT Products */
--- Tops (Category 1)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('ButterGoods Classic Logo Hoodie', 89.99, 1, 'Australian streetwear brand with quality construction.', 'buttergoods-hoodie.jpg', 25, 1, 'Black'),
-        ('Champion Powerblend Hoodie', 54.99, 1, 'Classic athletic hoodie with C logo.', 'champion-hoodie.jpg', 40, 1, 'Gray'),
-        ('Plain White T-Shirt', 19.99, 1, 'Basic cotton crew neck t-shirt.', 'white-tshirt.jpg', 100, 1, 'White'),
-        ('Plain Black T-Shirt', 19.99, 1, 'Essential black cotton t-shirt.', 'black-tshirt.jpg', 95, 1, 'Black'),
-        ('Gray Hoodie', 49.99, 1, 'Comfortable pullover hoodie in heather gray.', 'gray-hoodie.jpg', 40, 0, 'Gray'),
-        ('Navy Crewneck Sweater', 59.99, 1, 'Classic knit sweater in navy blue.', 'navy-sweater.jpg', 35, 0, 'Navy'),
-        ('Flannel Shirt', 44.99, 1, 'Red and black checkered flannel shirt.', 'flannel-shirt.jpg', 30, 0, 'Red'),
-        ('Denim Jacket', 79.99, 1, 'Classic blue denim trucker jacket.', 'denim-jacket.jpg', 25, 1, 'Blue'),
-        ('Plain Polo Shirt', 34.99, 1, 'Cotton pique polo shirt.', 'polo-shirt.jpg', 60, 0, 'Navy'),
-        ('V-Neck T-Shirt', 24.99, 1, 'Classic v-neck cotton t-shirt.', 'vneck-tshirt.jpg', 70, 0, 'White'),
-        ('Button-Down Shirt', 49.99, 1, 'Collared dress shirt in white.', 'button-shirt.jpg', 40, 0, 'White'),
-        ('Tank Top', 19.99, 1, 'Basic sleeveless cotton tank.', 'tank-top.jpg', 85, 0, 'White'),
-        ('Long Sleeve Shirt', 32.99, 1, 'Basic long sleeve cotton shirt.', 'long-sleeve-shirt.jpg', 55, 0, 'Gray'),
-        ('Cardigan Sweater', 64.99, 1, 'Open-front knit cardigan.', 'cardigan.jpg', 30, 0, 'Beige'),
-        ('Blouse', 39.99, 1, 'Elegant button-up blouse.', 'blouse.jpg', 40, 0, 'White'),
+INSERT INTO products (name, price, category_id, description, subcategory, image_url, stock, featured) VALUES
+('Iced Coffee', 4.99, 1, 'Refreshing iced coffee served chilled.', NULL, 'URL_HERE', 50, 0),
 
+('Hot Latte', 4.49, 1, 'Warm latte with creamy foam.', NULL, 'URL_HERE', 50, 0),
 
-        ('Floral Dress', 64.99, 1, 'Pretty dress with floral print.', 'floral-dress.jpg', 20, 0, 'Pink'),
-        ('Wrap Dress', 69.99, 1, 'Flattering wrap-style dress.', 'wrap-dress.jpg', 25, 1, 'Navy'),
-        ('Jean Jacket', 74.99, 1, 'Classic denim jacket for women.', 'womens-jean-jacket.jpg', 30, 0, 'Blue');
+('Snack Bites', 3.99, 3, 'Crispy fried snack bites.', NULL, 'URL_HERE', 50, 0),
 
--- Bottoms (Category 2)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('Blue Jeans', 69.99, 2, 'Classic straight-fit denim jeans.', 'blue-jeans.jpg', 50, 1, 'Blue'),
-        ('Black Jeans', 69.99, 2, 'Modern black denim jeans.', 'black-jeans.jpg', 45, 1, 'Black'),
-        ('High-Waisted Jeans', 74.99, 2, 'Modern high-rise skinny jeans.', 'high-waist-jeans.jpg', 45, 1, 'Blue'),
-        ('Khaki Chinos', 54.99, 2, 'Casual dress pants in khaki color.', 'khaki-chinos.jpg', 40, 0, 'Khaki'),
-        ('Track Pants', 49.99, 2, 'Comfortable athletic sweatpants.', 'track-pants.jpg', 35, 0, 'Black'),
+('Glazed Donut', 2.49, 2, 'Classic sweet glazed donut.', NULL, 'URL_HERE', 50, 0),
 
-        ('Denim Shorts', 34.99, 2, 'Classic mid-rise denim shorts.', 'denim-shorts.jpg', 50, 0, 'Blue'),
+('Cappuccino', 4.29, 1, 'Hot cappuccino with cinnamon.', NULL, 'URL_HERE', 50, 0),
 
+('Iced Tea Lemon', 3.99, 1, 'Iced tea with fresh lemon slices.', NULL, 'URL_HERE', 50, 0),
 
+('Iced Water', 1.49, 1, 'Cold refreshing water with ice.', NULL, 'URL_HERE', 50, 0),
 
-        ('Dress Pants', 54.99, 2, 'Formal trousers for business occasions.', 'dress-pants.jpg', 30, 0, 'Charcoal'),
-        ('Sweatpants', 44.99, 2, 'Comfortable cotton blend sweatpants.', 'sweatpants.jpg', 40, 0, 'Gray'),
+('Black Coffee', 2.99, 1, 'Strong hot black coffee.', NULL, 'URL_HERE', 50, 0),
 
-        ('Cargo Pants', 59.99, 2, 'Utility pants with multiple pockets.', 'cargo-pants.jpg', 25, 0, 'Olive'),
-        ('Athletic Shorts', 29.99, 2, 'Performance shorts for working out.', 'athletic-shorts.jpg', 50, 0, 'Black'),
-        ('Pleated Skirt', 44.99, 2, 'Classic pleated school-style skirt.', 'pleated-skirt.jpg', 30, 0, 'Navy'),
-        ('Skinny Jeans', 64.99, 2, 'Tight-fitting stretch denim jeans.', 'skinny-jeans.jpg', 40, 0, 'Black'),
-        ('Board Shorts', 34.99, 2, 'Quick-dry shorts for swimming.', 'board-shorts.jpg', 35, 0, 'Blue'),
-        ('Palazzo Pants', 49.99, 2, 'Wide-leg flowing pants.', 'palazzo-pants.jpg', 25, 0, 'Black'),
-        ('Bermuda Shorts', 39.99, 2, 'Knee-length casual shorts.', 'bermuda-shorts.jpg', 45, 0, 'Tan');
+-- GRID 2
 
--- Shoes (Category 3)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('Adidas Campus Sneakers', 89.99, 3, 'Retro suede sneakers with three stripes branding.', 'adidas-campus.jpg', 35, 1, 'Green'),
-        ('Reebok Classic Leather', 79.99, 3, 'Iconic white leather sneakers with classic styling.', 'reebok-classic.jpg', 40, 1, 'White'),
-        ('White Canvas Sneakers', 49.99, 3, 'Basic canvas lace-up sneakers.', 'white-canvas-shoes.jpg', 60, 1, 'White'),
-        ('Black Canvas Sneakers', 49.99, 3, 'Classic black canvas sneakers.', 'black-canvas-shoes.jpg', 55, 1, 'Black'),
-        ('Running Shoes', 79.99, 3, 'Comfortable athletic running shoes.', 'running-shoes.jpg', 40, 0, 'Gray'),
-        ('Slip-On Shoes', 54.99, 3, 'Easy slip-on canvas shoes.', 'slip-on-shoes.jpg', 50, 0, 'Navy'),
-        ('High-Top Sneakers', 64.99, 3, 'Classic high-top canvas sneakers.', 'high-top-sneakers.jpg', 35, 0, 'Red'),
-        ('Leather Boots', 129.99, 3, 'Durable leather ankle boots.', 'leather-boots.jpg', 20, 1, 'Brown'),
-        ('Sandals', 34.99, 3, 'Comfortable summer sandals.', 'sandals.jpg', 45, 0, 'Brown'),
-        ('Flip Flops', 19.99, 3, 'Basic rubber flip flop sandals.', 'flip-flops.jpg', 80, 0, 'Black'),
-        ('Dress Shoes', 199.99, 3, 'Formal leather dress shoes.', 'dress-shoes.jpg', 25, 0, 'Black'),
-        ('Rain Boots', 44.99, 3, 'Waterproof rubber boots.', 'rain-boots.jpg', 30, 0, 'Yellow'),
-        ('Hiking Boots', 119.99, 3, 'Sturdy outdoor hiking boots.', 'hiking-boots.jpg', 15, 0, 'Brown'),
-        ('Ballet Flats', 39.99, 3, 'Simple women''s flat shoes.', 'ballet-flats.jpg', 40, 0, 'Black'),
-        ('Heels', 69.99, 3, 'Classic women''s dress heels.', 'heels.jpg', 25, 0, 'Black'),
-        ('Winter Boots', 99.99, 3, 'Insulated boots for cold weather.', 'winter-boots.jpg', 20, 0, 'Black'),
-        ('Basketball Shoes', 99.99, 3, 'High-performance shoes for basketball.', 'basketball-shoes.jpg', 30, 0, 'Black'),
-        ('Skateboard Shoes', 64.99, 3, 'Durable shoes designed for skateboarding.', 'skate-shoes.jpg', 35, 0, 'Black'),
-        ('Loafers', 74.99, 3, 'Comfortable slip-on dress shoes.', 'loafers.jpg', 25, 0, 'Brown'),
-        ('Combat Boots', 109.99, 3, 'Military-style lace-up boots.', 'combat-boots.jpg', 20, 0, 'Black');
+('Caramel Iced Latte', 5.49, 1, 'Iced latte with caramel drizzle.', NULL, 'URL_HERE', 50, 0),
 
--- sample duplicates
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('ButterGoods Classic Logo Hoodie', 94.99, 1, 'Limited edition ButterGoods hoodie with premium construction.', 'buttergoods-hoodie.jpg', 15, 0, 'Gray'),
-        ('Champion Powerblend Hoodie', 59.99, 1, 'Champion hoodie in different colorway.', 'champion-hoodie.jpg', 25, 0, 'Navy'),
-        ('Adidas Campus Sneakers', 94.99, 3, 'Retro suede sneakers in navy colorway.', 'adidas-campus.jpg', 25, 0, 'Navy');
+('Hot Coffee', 2.99, 1, 'Freshly brewed hot coffee.', NULL, 'URL_HERE', 50, 0),
+
+('Croissant', 3.49, 2, 'Flaky buttery croissant.', NULL, 'URL_HERE', 50, 0),
+
+('Chocolate Donut', 2.79, 2, 'Donut topped with chocolate glaze.', NULL, 'URL_HERE', 50, 0),
+
+('Caramel Iced Latte (Tall)', 5.99, 1, 'Tall iced latte with caramel.', NULL, 'URL_HERE', 50, 0),
+
+('Hot Tea', 2.49, 1, 'Warm soothing tea.', NULL, 'URL_HERE', 50, 0),
+
+('Iced Coffee', 4.99, 1, 'Classic iced coffee.', NULL, 'URL_HERE', 50, 0),
+
+('Breakfast Sandwich', 6.49, 3, 'Egg, bacon, and cheese breakfast sandwich.', NULL, 'URL_HERE', 50, 0),
+
+-- GRID 3
+
+('Iced Coffee Milk', 4.99, 1, 'Iced coffee with milk.', NULL, 'URL_HERE', 50, 0),
+
+('Caramel Frappe', 5.99, 1, 'Blended caramel frappe.', NULL, 'URL_HERE', 50, 0),
+
+('Matcha Latte', 4.99, 1, 'Creamy matcha latte with latte art.', NULL, 'URL_HERE', 50, 0),
+
+('Iced Black Coffee', 3.99, 1, 'Cold brew black coffee.', NULL, 'URL_HERE', 50, 0),
+
+('Hot Chocolate', 3.99, 1, 'Hot chocolate with whipped cream.', NULL, 'URL_HERE', 50, 0),
+
+('Strawberry Milk', 4.49, 1, 'Sweet iced strawberry milk.', NULL, 'URL_HERE', 50, 0),
+
+('Hot Tea', 2.49, 1, 'Steaming cup of tea.', NULL, 'URL_HERE', 50, 0),
+
+('Strawberry Lemonade', 4.99, 1, 'Pink lemonade with strawberries.', NULL, 'URL_HERE', 50, 0),
+
+-- GRID 4
+
+('Latte', 4.49, 1, 'Hot latte with latte art.', NULL, 'URL_HERE', 50, 0),
+
+('Foamy Coffee', 3.99, 1, 'Coffee with thick foam.', NULL, 'URL_HERE', 50, 0),
+
+('Paper Cup Latte', 4.29, 1, 'Latte served in a paper cup.', NULL, 'URL_HERE', 50, 0),
+
+('Hot Tea', 2.49, 1, 'Warm tea in a paper cup.', NULL, 'URL_HERE', 50, 0),
+
+('Iced Coffee', 4.99, 1, 'Iced coffee in a clear cup.', NULL, 'URL_HERE', 50, 0),
+
+('Iced Latte', 5.29, 1, 'Iced latte with milk.', NULL, 'URL_HERE', 50, 0),
+
+('Breakfast Sandwich', 6.49, 3, 'Bacon, egg, and cheese sandwich.', NULL, 'URL_HERE', 50, 0),
+
+('Glazed Donut', 2.49, 2, 'Classic glazed donut.', NULL, 'URL_HERE', 50, 0),
+
+-- GRID 5
+
+('Iced Coffee Milk', 4.99, 1, 'Iced coffee with milk.', NULL, 'URL_HERE', 50, 0),
+
+('Iced Coffee', 4.49, 1, 'Classic iced coffee.', NULL, 'URL_HERE', 50, 0),
+
+('Breakfast Sandwich', 6.49, 3, 'Egg, bacon, and cheese sandwich.', NULL, 'URL_HERE', 50, 0),
+
+('Glazed Donut', 2.49, 2, 'Sweet glazed donut.', NULL, 'URL_HERE', 50, 0),
+
+('Snack Bites', 3.99, 3, 'Crispy fried snack bites.', NULL, 'URL_HERE', 50, 0),
+
+('Black Coffee', 2.99, 1, 'Hot black coffee.', NULL, 'URL_HERE', 50, 0),
+
+('Green Frappe', 5.49, 1, 'Green blended drink.', NULL, 'URL_HERE', 50, 0);
 
 -- add shopping cart items
 INSERT INTO cart_items (user_id, product_id, quantity)

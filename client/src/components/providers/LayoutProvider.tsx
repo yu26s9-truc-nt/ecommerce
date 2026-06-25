@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster } from "sonner";
@@ -10,7 +9,6 @@ import Footer from "@/components/layouts/Footer";
 import Header from "@/components/layouts/Header";
 import Sidebar from "@/components/layouts/Sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import type { Product } from "@/models/product";
 import { loadStoredLogin, setLogout } from "@/store/auth";
 import type { RootState } from "@/store/store";
 
@@ -44,7 +42,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
     const dispatch = useDispatch();
 
-    const { isAuthenticated, authorities } = useSelector(
+    const { isAuthenticated } = useSelector(
         (state: RootState) => state.authReducer
     );
 
@@ -82,7 +80,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
         );
     }, [dispatch, isAuthenticated]);
 
-    if (pathname === "/") {
+    if (pathname === "/" || pathname === "/checkout") {
         return (
             <>
                 <Header />
