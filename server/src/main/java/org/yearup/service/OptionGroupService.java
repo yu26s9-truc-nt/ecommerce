@@ -60,7 +60,7 @@ public class OptionGroupService {
 
         if (updatingOptionGroupUpdate.getOptionIds() != null) {
             // remove existing links
-            optionGroupOptionRepository.deleteByOptionGroupId(optionGroupId);
+            optionGroupOptionRepository.deleteByOptionGroup_OptionGroupId(optionGroupId);
 
             for (Integer optionId : updatingOptionGroupUpdate.getOptionIds()) {
                 Option option = optionService.getById(optionId);

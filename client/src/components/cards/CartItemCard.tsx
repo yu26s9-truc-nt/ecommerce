@@ -4,7 +4,13 @@ import { Trash2 } from "lucide-react";
 import { CldImage } from "next-cloudinary";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import { useUpdateCartItem } from "@/hooks/cart";
 import type { CartItem } from "@/models/cart";
 
@@ -42,16 +48,16 @@ export function CartItemCard({
                 </div>
 
                 <div className="min-w-0 flex-1">
-                    <div className="flex items-start justify-between gap-2">
+                    <CardHeader className="flex flex-row px-0 pt-0 justify-between">
                         <div className="min-w-0">
-                            <div className="truncate text-base font-semibold">
+                            <CardTitle className="text-base font-semibold">
                                 {product.name}
-                            </div>
+                            </CardTitle>
 
                             {product.subCategory && (
-                                <div className="mt-0.5 truncate text-xs text-muted-foreground">
+                                <CardDescription className="mt-0.5 truncate text-xs">
                                     {product.subCategory}
-                                </div>
+                                </CardDescription>
                             )}
 
                             <div className="mt-1 text-xs text-muted-foreground">
@@ -77,7 +83,7 @@ export function CartItemCard({
                             <Trash2 className="size-4" />
                             <span className="sr-only">Remove item</span>
                         </Button>
-                    </div>
+                    </CardHeader>
 
                     <div className="mt-3 flex items-center justify-between gap-3">
                         <div className="inline-flex items-center rounded-full bg-muted p-1">

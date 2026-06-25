@@ -7,7 +7,13 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import { useAddCartItem } from "@/hooks/cart";
 import type { Product } from "@/models/product";
 import type { RootState } from "@/store/store";
@@ -35,7 +41,12 @@ export default function ProductCard({
     );
 
     return (
-        <Card className="cursor-pointer">
+        <Card
+            className="cursor-pointer shadow-[0_6px_18px_-10px_rgba(42,24,16,0.18)]
+                transition-all duration-200 ease-in-out
+                hover:-translate-y-1
+                hover:shadow-[0_18px_40px_-16px_rgba(218,24,132,0.25)]"
+        >
             <div className="relative">
                 {imageUrl ? (
                     <CldImage
@@ -63,20 +74,18 @@ export default function ProductCard({
             </div>
 
             <CardContent>
-                <div className="flex items-start justify-between gap-2">
-                    <h3 className="truncate text-lg font-bold text-foreground">
-                        {name}
-                    </h3>
+                <CardHeader className="px-0">
+                    <CardTitle className="text-base">{name}</CardTitle>
 
                     {/*<span className="flex shrink-0 items-center gap-1 text-sm font-bold text-secondary">
                         <Star className="size-4 fill-current" />
                         {rating.toFixed(1)}
                     </span>*/}
-                </div>
+                </CardHeader>
 
-                <p className="mt-1 line-clamp-2 h-10 text-sm text-muted-foreground">
+                <CardDescription className="mt-1 line-clamp-2 h-10">
                     {description}
-                </p>
+                </CardDescription>
 
                 <div className="mt-3 flex items-center justify-between">
                     <span className="text-lg font-extrabold text-primary">

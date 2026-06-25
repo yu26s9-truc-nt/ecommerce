@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface OptionGroupOptionRepository extends JpaRepository<OptionGroupOption, OptionGroupOption.OptionGroupOptionId> {
-    void deleteByOptionGroupId(int optionGroupId);
+    void deleteByOptionGroup_OptionGroupId(int optionGroupId);
 }
