@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 import Dialog from "@/components/dialogs/FormDialog";
+import LoginForm from "@/components/forms/LoginForm";
+import RegisterForm from "@/components/forms/RegisterForm";
 import CartSheet from "@/components/sheets/CartSheet";
 import { Button } from "@/components/ui/button";
 import { useGetCart } from "@/hooks/cart";
@@ -14,13 +16,11 @@ import { setLogout } from "@/store/auth";
 import { setCart } from "@/store/cart";
 import type { RootState } from "@/store/store";
 
-import LoginForm from "../forms/LoginForm";
-
 const DEFAULT_CART = { items: {}, total: 0 };
 
 const Header = () => {
     const dispatch = useDispatch();
-    const [authOpen, setAuthOpen] = useState(false);
+    const [authOpen, setAuthOpen] = useState("");
     const [cartOpen, setCartOpen] = useState(false);
     const router = useRouter();
 
@@ -40,10 +40,6 @@ const Header = () => {
         if (!isAuthenticated) return;
         dispatch(setCart(cart));
     }, [dispatch, isAuthenticated, cart]);
-
-    const openAuth = () => {
-        setAuthOpen(true);
-    };
 
     const handleLogout = async () => {
         try {
@@ -107,12 +103,15 @@ const Header = () => {
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={openAuth}
+                                onClick={() => setAuthOpen("register")}
                             >
                                 Register
                             </Button>
 
-                            <Button type="button" onClick={openAuth}>
+                            <Button
+                                type="button"
+                                onClick={() => setAuthOpen("login")}
+                            >
                                 Login
                             </Button>
                         </div>
@@ -120,14 +119,27 @@ const Header = () => {
                 </div>
             </header>
 
-            <Dialog
-                open={authOpen}
-                onOpenChange={setAuthOpen}
-                title="Welcome back"
-                description="Login to view your order history"
-            >
-                <LoginForm onOpenChange={setAuthOpen} />
-            </Dialog>
+            {authOpen === "login" && (
+                <Dialog
+                    open={true}
+                    onOpenChange={() => setAuthOpen("")}
+                    title="Welcome back"
+                    description="Login to view your order history"
+                >
+                    <LoginForm onOpenChange={() => setAuthOpen("")} />
+                </Dialog>
+            )}
+
+            {authOpen === "register" && (
+                <Dialog
+                    open={true}
+                    onOpenChange={() => setAuthOpen("")}
+                    title="Welcome!!!!"
+                    description="Register to explore our wonderfull menu"
+                >
+                    <RegisterForm onOpenChange={() => setAuthOpen("")} />
+                </Dialog>
+            )}
 
             <CartSheet open={cartOpen} onOpenChange={setCartOpen} />
         </>

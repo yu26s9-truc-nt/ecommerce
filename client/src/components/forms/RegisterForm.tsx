@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { register } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -42,13 +43,25 @@ export type RegisterFormValues = z.infer<typeof registerSchema>;
 
 type RegisterFormProps = {
     defaultValues?: Partial<RegisterFormValues>;
-    onSubmit: (values: RegisterFormValues) => void | Promise<void>;
+    onOpenChange: () => void;
 };
 
 export default function RegisterForm({
     defaultValues,
-    onSubmit,
+    onOpenChange,
 }: RegisterFormProps) {
+    const onSubmit = async (values: RegisterFormValues) => {
+        try {
+            await register(values);
+
+            form.reset();
+
+            onOpenChange?.();
+        } catch (error) {
+            console.error("Register failed:", error);
+        }
+    };
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 

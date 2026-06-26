@@ -59,7 +59,7 @@ export default function LoginForm({ onOpenChange }: Props) {
 
             form.reset();
 
-            onOpenChange?.(false);
+            onOpenChange?.();
         } catch (error) {
             console.error("Login failed:", error);
         }
