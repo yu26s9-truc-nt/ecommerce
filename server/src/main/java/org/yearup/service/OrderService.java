@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yearup.dto.CartDTO;
 import org.yearup.dto.CartItemDTO;
+import org.yearup.dto.OrderCreateRequestDTO;
 import org.yearup.model.Order;
 import org.yearup.model.OrderLineItem;
 import org.yearup.model.Profile;
@@ -14,6 +15,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static org.springframework.util.Assert.hasText;
 
 @Service
 public class OrderService {
@@ -35,7 +38,7 @@ public class OrderService {
     }
 
     @Transactional
-    public Order create(int userId) {
+    public Order create(int userId, OrderCreateRequestDTO orderCreateRequestDTO) {
         CartDTO cart = cartService.getCart(userId);
 
         if(cart.getItems().isEmpty()){
@@ -44,13 +47,18 @@ public class OrderService {
 
         Profile profile = profileService.getByUserId(userId);
 
+        String address = orderCreateRequestDTO.getAddress() != null ? orderCreateRequestDTO.getAddress() : profile.getAddress();
+        String city    = orderCreateRequestDTO.getCity() != null    ? orderCreateRequestDTO.getCity()    : profile.getCity();
+        String state   = orderCreateRequestDTO.getState() != null   ? orderCreateRequestDTO.getState()   : profile.getState();
+        String zip     = orderCreateRequestDTO.getZip() != null    ? orderCreateRequestDTO.getZip()     : profile.getZip();
+
         Order order = new Order(
                 userId,
                 LocalDateTime.now(),
-                profile.getAddress(),
-                profile.getCity(),
-                profile.getState(),
-                profile.getZip(),
+                address,
+                city,
+                state,
+                zip,
                 BigDecimal.valueOf(0)
         );
         Order saved = orderRepository.save(order);

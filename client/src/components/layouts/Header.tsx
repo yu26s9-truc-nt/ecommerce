@@ -1,50 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
-import AuthDialog from "@/components/dialogs/AuthDialog";
+import Dialog from "@/components/dialogs/FormDialog";
 import CartSheet from "@/components/sheets/CartSheet";
 import { Button } from "@/components/ui/button";
 import { useGetCart } from "@/hooks/cart";
-import { loadStoredLogin, setLogout } from "@/store/auth";
+import { setLogout } from "@/store/auth";
 import { setCart } from "@/store/cart";
 import type { RootState } from "@/store/store";
 
-type JwtPayload = {
-    sub?: string;
-    auth?: string;
-    exp?: number;
-};
+import LoginForm from "../forms/LoginForm";
 
-const decodeJwtPayload = (token: string): JwtPayload | null => {
-    try {
-        const [, payload] = token.split(".");
-
-        if (!payload) {
-            return null;
-        }
-
-        const normalizedPayload = payload.replace(/-/g, "+").replace(/_/g, "/");
-        const paddedPayload = normalizedPayload.padEnd(
-            Math.ceil(normalizedPayload.length / 4) * 4,
-            "="
-        );
-
-        return JSON.parse(atob(paddedPayload)) as JwtPayload;
-    } catch {
-        return null;
-    }
-};
+const DEFAULT_CART = { items: {}, total: 0 };
 
 const Header = () => {
     const dispatch = useDispatch();
     const [authOpen, setAuthOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
+    const router = useRouter();
 
-    const { isAuthenticated, authorities } = useSelector(
+    const { isAuthenticated } = useSelector(
         (state: RootState) => state.authReducer
     );
 
@@ -54,44 +34,7 @@ const Header = () => {
         0
     );
 
-    const isAdmin = authorities.includes("ROLE_ADMIN");
-
-    const { data: cart = { items: {}, total: 0 } } =
-        useGetCart(isAuthenticated);
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            return;
-        }
-
-        const token = localStorage.getItem("accessToken");
-
-        if (!token) {
-            return;
-        }
-
-        const payload = decodeJwtPayload(token);
-        const isExpired = payload?.exp
-            ? payload.exp * 1000 <= Date.now()
-            : false;
-
-        if (!payload?.sub || isExpired) {
-            dispatch(setLogout());
-            return;
-        }
-
-        dispatch(
-            loadStoredLogin({
-                token,
-                username: payload.sub,
-                authorities:
-                    payload.auth
-                        ?.split(",")
-                        .map((authority) => authority.trim())
-                        .filter(Boolean) ?? [],
-            })
-        );
-    }, [dispatch, isAuthenticated]);
+    const { data: cart = DEFAULT_CART } = useGetCart(isAuthenticated);
 
     useEffect(() => {
         if (!isAuthenticated) return;
@@ -106,6 +49,7 @@ const Header = () => {
         try {
             dispatch(setLogout());
             toast.success("Logout successfully!!!");
+            router.push("/");
         } catch (error) {
             console.error("Login failed:", error);
             toast.error("Error");
@@ -114,16 +58,16 @@ const Header = () => {
 
     return (
         <>
-            <header className="sticky top-0 z-40 border-b-2 border-dline bg-white">
+            <header className="h-20 sticky top-0 z-40 border-b-2 border-dline bg-white">
                 <div className="stripe" />
 
                 <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
                     <Link href="/" className="flex shrink-0 items-center gap-2">
                         <Button
                             type="button"
-                            className="h-[38px] w-[38px] shadow-[0_4px_10px_rgba(218,24,132,0.4)]"
+                            className="h-[38px] w-[38px] shadow-[0_4px_10px_rgba(218,24,132,0.4)] rounded-full"
                         >
-                            DD
+                            D
                         </Button>
 
                         <div className="text-2xl font-bold text-primary">
@@ -135,17 +79,9 @@ const Header = () => {
 
                     {isAuthenticated ? (
                         <div className="flex items-center gap-2">
-                            <Link href="/orders">
-                                <Button type="button" variant="outline">
-                                    Order History
-                                </Button>
+                            <Link href="/profile">
+                                <Button type="button">Account</Button>
                             </Link>
-
-                            {isAdmin && (
-                                <Link href="/admin">
-                                    <Button type="button">Admin</Button>
-                                </Link>
-                            )}
 
                             <Button
                                 type="button"
@@ -184,7 +120,14 @@ const Header = () => {
                 </div>
             </header>
 
-            <AuthDialog open={authOpen} onOpenChange={setAuthOpen} />
+            <Dialog
+                open={authOpen}
+                onOpenChange={setAuthOpen}
+                title="Welcome back"
+                description="Login to view your order history"
+            >
+                <LoginForm onOpenChange={setAuthOpen} />
+            </Dialog>
 
             <CartSheet open={cartOpen} onOpenChange={setCartOpen} />
         </>

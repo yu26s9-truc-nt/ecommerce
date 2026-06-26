@@ -14,7 +14,7 @@ export default function HeroPanel() {
             <div className="mx-auto grid max-w-6xl items-center gap-6 px-4 py-10 text-white md:grid-cols-2 md:py-16">
                 <div>
                     <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-sm font-bold backdrop-blur">
-                        ⚡ RUN ON DUNK&apos;
+                        ⚡ RUN ON DOLICIOUS&apos;
                     </span>
 
                     <h1 className="mt-3 text-4xl leading-tight md:text-6xl font-bold">

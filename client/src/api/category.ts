@@ -1,11 +1,9 @@
-// src/api/categories.ts
-
 import { StatusCodes } from "http-status-codes";
 
 import type {
     Category,
-    CreateCategoryRequest,
-    UpdateCategoryRequest,
+    CategoryCreateRequest,
+    CategoryUpdateRequest,
 } from "@/models/category";
 
 import request from "./axios";
@@ -28,8 +26,8 @@ export const getCategoryProducts = (categoryId: number) =>
         method: "get",
     });
 
-export const createCategory = (data: CreateCategoryRequest) =>
-    request<CreateCategoryRequest, Category>(
+export const createCategory = (data: CategoryCreateRequest) =>
+    request<CategoryCreateRequest, Category>(
         {
             url: "categories",
             method: "post",
@@ -42,11 +40,8 @@ export const createCategory = (data: CreateCategoryRequest) =>
         }
     );
 
-export const updateCategory = (
-    categoryId: number,
-    data: CreateCategoryRequest
-) =>
-    request<CreateCategoryRequest, Category>({
+export const putCategory = (categoryId: number, data: CategoryUpdateRequest) =>
+    request<CategoryUpdateRequest, Category>({
         url: `categories/${categoryId}`,
         method: "put",
         data,
@@ -54,9 +49,9 @@ export const updateCategory = (
 
 export const patchCategory = (
     categoryId: number,
-    data: UpdateCategoryRequest
+    data: CategoryUpdateRequest
 ) =>
-    request<UpdateCategoryRequest, Category>({
+    request<CategoryUpdateRequest, Category>({
         url: `categories/${categoryId}`,
         method: "patch",
         data,

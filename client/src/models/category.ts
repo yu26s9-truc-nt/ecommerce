@@ -6,9 +6,9 @@ export type Category = {
 
 export type GetCategoriesParams = void;
 
-export type CreateCategoryRequest = {
+export type CategoryCreateRequest = {
     name: string;
     description?: string;
 };
 
-export type UpdateCategoryRequest = Partial<CreateCategoryRequest>;
+export type CategoryUpdateRequest = Partial<CategoryCreateRequest>;

@@ -12,85 +12,37 @@ VALUES  (1, 'Joe', 'Joesephus', '800-555-1234', 'joejoesephus@email.com', '789 O
 
 /* INSERT Categories */
 INSERT INTO categories (name, description)
-VALUES  ('Tops', 'T-shirts, hoodies, sweaters, jackets, and other upper body clothing.'),
-        ('Bottoms', 'Jeans, pants, shorts, skirts, and other lower body clothing.'),
-        ('Shoes', 'Sneakers, boots, dress shoes, sandals, and all footwear.');
+VALUES  ('Drink', 'Some drinks'),
+        ('Bakery', 'Some bakery'),
+        ('Food', 'Some food');
 
 /* INSERT Products */
--- Tops (Category 1)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('ButterGoods Classic Logo Hoodie', 89.99, 1, 'Australian streetwear brand with quality construction.', 'buttergoods-hoodie.jpg', 25, 1, 'Black'),
-        ('Champion Powerblend Hoodie', 54.99, 1, 'Classic athletic hoodie with C logo.', 'champion-hoodie.jpg', 40, 1, 'Gray'),
-        ('Plain White T-Shirt', 19.99, 1, 'Basic cotton crew neck t-shirt.', 'white-tshirt.jpg', 100, 1, 'White'),
-        ('Plain Black T-Shirt', 19.99, 1, 'Essential black cotton t-shirt.', 'black-tshirt.jpg', 95, 1, 'Black'),
-        ('Gray Hoodie', 49.99, 1, 'Comfortable pullover hoodie in heather gray.', 'gray-hoodie.jpg', 40, 0, 'Gray'),
-        ('Navy Crewneck Sweater', 59.99, 1, 'Classic knit sweater in navy blue.', 'navy-sweater.jpg', 35, 0, 'Navy'),
-        ('Flannel Shirt', 44.99, 1, 'Red and black checkered flannel shirt.', 'flannel-shirt.jpg', 30, 0, 'Red'),
-        ('Denim Jacket', 79.99, 1, 'Classic blue denim trucker jacket.', 'denim-jacket.jpg', 25, 1, 'Blue'),
-        ('Plain Polo Shirt', 34.99, 1, 'Cotton pique polo shirt.', 'polo-shirt.jpg', 60, 0, 'Navy'),
-        ('V-Neck T-Shirt', 24.99, 1, 'Classic v-neck cotton t-shirt.', 'vneck-tshirt.jpg', 70, 0, 'White'),
-        ('Button-Down Shirt', 49.99, 1, 'Collared dress shirt in white.', 'button-shirt.jpg', 40, 0, 'White'),
-        ('Tank Top', 19.99, 1, 'Basic sleeveless cotton tank.', 'tank-top.jpg', 85, 0, 'White'),
-        ('Long Sleeve Shirt', 32.99, 1, 'Basic long sleeve cotton shirt.', 'long-sleeve-shirt.jpg', 55, 0, 'Gray'),
-        ('Cardigan Sweater', 64.99, 1, 'Open-front knit cardigan.', 'cardigan.jpg', 30, 0, 'Beige'),
-        ('Blouse', 39.99, 1, 'Elegant button-up blouse.', 'blouse.jpg', 40, 0, 'White'),
-
-
-        ('Floral Dress', 64.99, 1, 'Pretty dress with floral print.', 'floral-dress.jpg', 20, 0, 'Pink'),
-        ('Wrap Dress', 69.99, 1, 'Flattering wrap-style dress.', 'wrap-dress.jpg', 25, 1, 'Navy'),
-        ('Jean Jacket', 74.99, 1, 'Classic denim jacket for women.', 'womens-jean-jacket.jpg', 30, 0, 'Blue');
-
--- Bottoms (Category 2)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('Blue Jeans', 69.99, 2, 'Classic straight-fit denim jeans.', 'blue-jeans.jpg', 50, 1, 'Blue'),
-        ('Black Jeans', 69.99, 2, 'Modern black denim jeans.', 'black-jeans.jpg', 45, 1, 'Black'),
-        ('High-Waisted Jeans', 74.99, 2, 'Modern high-rise skinny jeans.', 'high-waist-jeans.jpg', 45, 1, 'Blue'),
-        ('Khaki Chinos', 54.99, 2, 'Casual dress pants in khaki color.', 'khaki-chinos.jpg', 40, 0, 'Khaki'),
-        ('Track Pants', 49.99, 2, 'Comfortable athletic sweatpants.', 'track-pants.jpg', 35, 0, 'Black'),
-
-        ('Denim Shorts', 34.99, 2, 'Classic mid-rise denim shorts.', 'denim-shorts.jpg', 50, 0, 'Blue'),
-
-
-
-        ('Dress Pants', 54.99, 2, 'Formal trousers for business occasions.', 'dress-pants.jpg', 30, 0, 'Charcoal'),
-        ('Sweatpants', 44.99, 2, 'Comfortable cotton blend sweatpants.', 'sweatpants.jpg', 40, 0, 'Gray'),
-
-        ('Cargo Pants', 59.99, 2, 'Utility pants with multiple pockets.', 'cargo-pants.jpg', 25, 0, 'Olive'),
-        ('Athletic Shorts', 29.99, 2, 'Performance shorts for working out.', 'athletic-shorts.jpg', 50, 0, 'Black'),
-        ('Pleated Skirt', 44.99, 2, 'Classic pleated school-style skirt.', 'pleated-skirt.jpg', 30, 0, 'Navy'),
-        ('Skinny Jeans', 64.99, 2, 'Tight-fitting stretch denim jeans.', 'skinny-jeans.jpg', 40, 0, 'Black'),
-        ('Board Shorts', 34.99, 2, 'Quick-dry shorts for swimming.', 'board-shorts.jpg', 35, 0, 'Blue'),
-        ('Palazzo Pants', 49.99, 2, 'Wide-leg flowing pants.', 'palazzo-pants.jpg', 25, 0, 'Black'),
-        ('Bermuda Shorts', 39.99, 2, 'Knee-length casual shorts.', 'bermuda-shorts.jpg', 45, 0, 'Tan');
-
--- Shoes (Category 3)
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('Adidas Campus Sneakers', 89.99, 3, 'Retro suede sneakers with three stripes branding.', 'adidas-campus.jpg', 35, 1, 'Green'),
-        ('Reebok Classic Leather', 79.99, 3, 'Iconic white leather sneakers with classic styling.', 'reebok-classic.jpg', 40, 1, 'White'),
-        ('White Canvas Sneakers', 49.99, 3, 'Basic canvas lace-up sneakers.', 'white-canvas-shoes.jpg', 60, 1, 'White'),
-        ('Black Canvas Sneakers', 49.99, 3, 'Classic black canvas sneakers.', 'black-canvas-shoes.jpg', 55, 1, 'Black'),
-        ('Running Shoes', 79.99, 3, 'Comfortable athletic running shoes.', 'running-shoes.jpg', 40, 0, 'Gray'),
-        ('Slip-On Shoes', 54.99, 3, 'Easy slip-on canvas shoes.', 'slip-on-shoes.jpg', 50, 0, 'Navy'),
-        ('High-Top Sneakers', 64.99, 3, 'Classic high-top canvas sneakers.', 'high-top-sneakers.jpg', 35, 0, 'Red'),
-        ('Leather Boots', 129.99, 3, 'Durable leather ankle boots.', 'leather-boots.jpg', 20, 1, 'Brown'),
-        ('Sandals', 34.99, 3, 'Comfortable summer sandals.', 'sandals.jpg', 45, 0, 'Brown'),
-        ('Flip Flops', 19.99, 3, 'Basic rubber flip flop sandals.', 'flip-flops.jpg', 80, 0, 'Black'),
-        ('Dress Shoes', 199.99, 3, 'Formal leather dress shoes.', 'dress-shoes.jpg', 25, 0, 'Black'),
-        ('Rain Boots', 44.99, 3, 'Waterproof rubber boots.', 'rain-boots.jpg', 30, 0, 'Yellow'),
-        ('Hiking Boots', 119.99, 3, 'Sturdy outdoor hiking boots.', 'hiking-boots.jpg', 15, 0, 'Brown'),
-        ('Ballet Flats', 39.99, 3, 'Simple women''s flat shoes.', 'ballet-flats.jpg', 40, 0, 'Black'),
-        ('Heels', 69.99, 3, 'Classic women''s dress heels.', 'heels.jpg', 25, 0, 'Black'),
-        ('Winter Boots', 99.99, 3, 'Insulated boots for cold weather.', 'winter-boots.jpg', 20, 0, 'Black'),
-        ('Basketball Shoes', 99.99, 3, 'High-performance shoes for basketball.', 'basketball-shoes.jpg', 30, 0, 'Black'),
-        ('Skateboard Shoes', 64.99, 3, 'Durable shoes designed for skateboarding.', 'skate-shoes.jpg', 35, 0, 'Black'),
-        ('Loafers', 74.99, 3, 'Comfortable slip-on dress shoes.', 'loafers.jpg', 25, 0, 'Brown'),
-        ('Combat Boots', 109.99, 3, 'Military-style lace-up boots.', 'combat-boots.jpg', 20, 0, 'Black');
-
--- sample duplicates
-INSERT INTO products (name, price, category_id, description, image_url, stock, featured, subcategory)
-VALUES  ('ButterGoods Classic Logo Hoodie', 94.99, 1, 'Limited edition ButterGoods hoodie with premium construction.', 'buttergoods-hoodie.jpg', 15, 0, 'Gray'),
-        ('Champion Powerblend Hoodie', 59.99, 1, 'Champion hoodie in different colorway.', 'champion-hoodie.jpg', 25, 0, 'Navy'),
-        ('Adidas Campus Sneakers', 94.99, 3, 'Retro suede sneakers in navy colorway.', 'adidas-campus.jpg', 25, 0, 'Navy');
+INSERT INTO products (name, price, category_id, description, subcategory, image_url, stock, featured) VALUES
+('Iced Coffee', 4.99, 1, 'Refreshing iced coffee served chilled.', NULL, 'b7005e81-7a5a-4ac2-9b47-7ee973385504.png', 50, 0),
+('Hot Latte', 4.49, 1, 'Warm latte with creamy foam.', NULL, '01a1be30-d2aa-452d-997d-93318f0e8c9f.jpeg', 50, 0),
+('Snack Bites', 3.99, 3, 'Crispy fried snack bites.', NULL, 'hash.jpg', 50, 0),
+('Glazed Donut', 2.49, 2, 'Classic sweet glazed donut.', NULL, 'glazed.jpg', 50, 0),
+('Cappuccino', 4.29, 1, 'Hot cappuccino with cinnamon.', NULL, 'f7d25a1e-a3a0-4934-a31f-0431143b5d25.jpeg', 50, 0),
+('Iced Tea Lemon', 3.99, 1, 'Iced tea with fresh lemon slices.', NULL, 'ebb0bb36-e303-4277-af9d-0d6e63c9cdf1.jpeg', 50, 0),
+('Iced Water', 1.49, 1, 'Cold refreshing water with ice.', NULL, 'e8858b6c-cc73-4b81-a38f-c6866bafcdfb.jpeg', 50, 0),
+('Black Coffee', 2.99, 1, 'Strong hot black coffee.', NULL, 'coffee.jpg', 50, 0),
+('Caramel Iced Latte', 5.49, 1, 'Iced latte with caramel drizzle.', NULL, 'dcfeb632-bc7d-42b1-abb8-47f9a5e15f2c.jpeg', 50, 0),
+('Hot Coffee', 2.99, 1, 'Freshly brewed hot coffee.', NULL, 'd45f138a-2aa2-45cb-886f-4730507da716.jpeg', 50, 0),
+('Croissant', 3.49, 2, 'Flaky buttery croissant.', NULL, 'croissant.jpg', 50, 0),
+('Chocolate Donut', 2.79, 2, 'Donut topped with chocolate glaze.', NULL, 'boston.jpg', 50, 0),
+('Caramel Iced Latte (Tall)', 5.99, 1, 'Tall iced latte with caramel.', NULL, 'c554e94d-2c4e-402e-a7f2-0cddf29e44c4.jpeg', 50, 0),
+('Hot Tea', 2.49, 1, 'Warm soothing tea.', NULL, '4c5add33-51cf-4f0d-8dcf-b5d320ba0caf.jpeg', 50, 0),
+('Breakfast Sandwich', 6.49, 3, 'Egg, bacon, and cheese breakfast sandwich.', NULL, 'bec.jpg', 50, 0),
+('Iced Coffee Milk', 4.99, 1, 'Iced coffee with milk.', NULL, 'e57df8de-34c0-4f5a-850f-a46f2f21682e-2.png', 50, 0),
+('Caramel Frappe', 5.99, 1, 'Blended caramel frappe.', NULL, '976bb2c6-9b02-4d17-81b3-226fb563249f.png', 50, 0),
+('Matcha Latte', 4.99, 1, 'Creamy matcha latte with latte art.', NULL, '63f89326-cf89-4c0b-832e-1100711ffdb6.jpeg', 50, 0),
+('Iced Black Coffee', 3.99, 1, 'Cold brew black coffee.', NULL, '4108fd98-5565-4f70-8997-3f44f7e5e57c.jpeg', 50, 0),
+('Hot Chocolate', 3.99, 1, 'Hot chocolate with whipped cream.', NULL, '0381cc7f-c385-42a1-bc40-2b98cd83bfb8.jpeg', 50, 0),
+('Strawberry Milk', 4.49, 1, 'Sweet iced strawberry milk.', NULL, '56eb35e3-99bf-4506-892e-3f85839057da.png', 50, 0),
+('Strawberry Lemonade', 4.99, 1, 'Pink lemonade with strawberries.', NULL, '6f350f37-ba83-4f86-87b5-d896eb446cc0.jpeg', 50, 0),
+('Latte', 4.49, 1, 'Hot latte with latte art.', NULL, '32c41789-593f-4c6e-ba0d-5402f6d9798e.jpeg', 50, 0),
+('Paper Cup Latte', 4.29, 1, 'Latte served in a paper cup.', NULL, 'latte.jpg', 50, 0),
+('Iced Latte', 5.29, 1, 'Iced latte with milk.', NULL, 'bf80b9f4-92b0-41f0-847c-854c98958fc6.jpeg', 50, 0);
 
 -- add shopping cart items
 INSERT INTO cart_items (user_id, product_id, quantity)

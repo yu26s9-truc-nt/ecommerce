@@ -194,7 +194,7 @@ const Sidebar = React.forwardRef<
             return (
                 <div
                     className={cn(
-                        "flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground",
+                        "flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground rounded-[1.25rem] border border-border bg-card shadow-[0_6px_18px_-10px_rgba(42,24,16,0.18)] overflow-hidden m-4",
                         className
                     )}
                     ref={ref}
@@ -273,7 +273,13 @@ const Sidebar = React.forwardRef<
                 >
                     <div
                         data-sidebar="sidebar"
-                        className="flex h-full w-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow"
+                        className={cn(
+                            "flex h-full w-full flex-col",
+                            "rounded-2xl border border-dline bg-white shadow-tile",
+                            "group-data-[variant=floating]:rounded-2xl",
+                            "group-data-[variant=floating]:border-dline",
+                            "group-data-[variant=floating]:shadow-tile"
+                        )}
                     >
                         {children}
                     </div>
@@ -383,7 +389,7 @@ const SidebarHeader = React.forwardRef<
         <div
             ref={ref}
             data-sidebar="header"
-            className={cn("flex flex-col gap-2 p-2", className)}
+            className={cn("flex flex-col gap-2 px-3 py-2", className)}
             {...props}
         />
     );
@@ -540,19 +546,44 @@ const SidebarMenuItem = React.forwardRef<
 SidebarMenuItem.displayName = "SidebarMenuItem";
 
 const sidebarMenuButtonVariants = cva(
-    "peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring cursor-pointer transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+    cn(
+        "peer/menu-button flex w-full items-center gap-2",
+        "rounded-lg",
+        "p-3",
+        "text-left",
+        "text-sm",
+        "font-bold",
+        "transition-colors",
+        "outline-none",
+        "cursor-pointer",
+        "ring-sidebar-ring",
+
+        "text-dbrown",
+        "hover:bg-secondary",
+        "hover:text-primary",
+
+        "data-[active=true]:bg-primary",
+        "data-[active=true]:text-white",
+
+        "focus-visible:ring-2",
+
+        "[&>svg]:size-4",
+        "[&>svg]:shrink-0",
+
+        "group-data-[collapsible=icon]:!size-10",
+        "group-data-[collapsible=icon]:!justify-center",
+        "group-data-[collapsible=icon]:!p-0"
+    ),
     {
         variants: {
             variant: {
-                default:
-                    "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                outline:
-                    "bg-background shadow-[0_0_0_1px_var(--sidebar-border)] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_var(--sidebar-accent)]",
+                default: "",
+                outline: "border border-dline bg-white",
             },
             size: {
-                default: "h-8 text-sm",
-                sm: "h-7 text-xs",
-                lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0",
+                default: "",
+                sm: "text-xs",
+                lg: "text-base py-3",
             },
         },
         defaultVariants: {

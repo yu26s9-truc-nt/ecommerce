@@ -4,7 +4,7 @@ const Footer = () => {
             <div className="stripe"></div>
             <div className="max-w-6xl mx-auto px-4 py-10 text-center">
                 <div className="text-3xl md:text-4xl font-extrabold">
-                    AMERICA RUNS ON DUNK&apos;
+                    AMERICA RUNS ON DOLICIOUS&apos;
                 </div>
                 <p className="mt-2 opacity-90">
                     Fresh coffee, hot donuts, happy mornings.

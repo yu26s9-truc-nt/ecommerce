@@ -5,7 +5,6 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
 
 type PriceRange = {
     min: number;
@@ -56,13 +55,6 @@ export default function PriceFilter({
         onChange?.(normalized);
     };
 
-    const handleSliderChange = (vals: number[]) => {
-        updateRange({
-            min: vals[0] ?? min,
-            max: vals[1] ?? max,
-        });
-    };
-
     const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const nextMin = Number(e.target.value || 0);
         updateRange({ min: nextMin, max: range.max });
@@ -104,16 +96,6 @@ export default function PriceFilter({
                     <X className="mr-1 size-4" />
                     Reset
                 </Button>
-            </div>
-
-            <div className="mb-4">
-                <Slider
-                    value={[range.min, range.max]}
-                    min={min}
-                    max={max}
-                    step={1}
-                    onValueChange={handleSliderChange}
-                />
             </div>
 
             <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">

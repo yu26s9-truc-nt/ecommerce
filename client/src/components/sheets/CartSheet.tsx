@@ -2,6 +2,7 @@
 
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,6 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import { useCreateOrder } from "@/hooks/order";
 import type { RootState } from "@/store/store";
 
 import { CartItemCard } from "../cards/CartItemCard";
@@ -39,7 +39,7 @@ type CartSheetsProps = {
 };
 
 export default function CartSheets({ open, onOpenChange }: CartSheetsProps) {
-    const { mutate: createOrder } = useCreateOrder();
+    const router = useRouter();
 
     const cartItems = useSelector(
         (state: RootState) => state.cartReducer.items
@@ -135,7 +135,7 @@ export default function CartSheets({ open, onOpenChange }: CartSheetsProps) {
                         <Button
                             type="button"
                             className="mt-4 w-full"
-                            onClick={() => createOrder()}
+                            onClick={() => router.push("/checkout")}
                             disabled={cartItems.length === 0}
                         >
                             <ShoppingCart className="mr-2 size-4" />

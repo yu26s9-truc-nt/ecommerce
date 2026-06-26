@@ -35,7 +35,7 @@ public class ProfileController {
         return profileService.getByUserId(userId);
     }
 
-    @PatchMapping
+    @PutMapping
     @PreAuthorize("isAuthenticated()")
     public Profile updateFull(Principal principal, @Valid @RequestBody Profile updatingProfile) {
         String userName = principal.getName();

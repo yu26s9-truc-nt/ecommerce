@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="23fb1c1b-c133-4094-af87-6aed45829663" name="Changes" comment="" />
+    <list default="true" id="23fb1c1b-c133-4094-af87-6aed45829663" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/controller/OptionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/controller/OptionGroupController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/dto/OptionGroupCreateDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/dto/OptionGroupUpdateDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/model/Option.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/model/OptionGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/model/OptionGroupRule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/repository/OptionGroupOptionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/repository/OptionGroupRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/repository/OptionGroupRuleRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/repository/OptionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/service/OptionGroupService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/org/yearup/service/OptionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/db/migration/V3__create_option_related_tables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/db/migration/V3__create_option_related_tables.sql" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0,
-  "fromUser": false
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3FQ990IGnQMVwOuEU12Mg0S7COK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -20,10 +38,12 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "feat/option",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/tnguy485/myapp/pluralsight/clothingstore"
+    "last_opened_file_path": "/Users/tnguy485/myapp/pluralsight/ecommerce"
   }
 }]]></component>
   <component name="SharedIndexes">

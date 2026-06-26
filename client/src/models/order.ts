@@ -8,3 +8,10 @@ export type Order = {
     shippingAmount: number;
     orderId: number;
 };
+
+export type OrderCreateRequest = {
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
+};

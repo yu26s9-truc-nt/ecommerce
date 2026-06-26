@@ -77,6 +77,7 @@ const request = async <D = unknown, T = unknown>(
     showMessage = false
 ): Promise<AxiosResponse<T>> => {
     try {
+        showMessage = showMessage || config.method?.toLowerCase() !== "get";
         const res = await axiosDefault.request<T, AxiosResponse<T>, D>(config);
 
         const message = responseMessage?.[res.status] ?? {
@@ -118,6 +119,7 @@ const handleResponseStatus = (statusCode: number, message?: string): string => {
         case StatusCodes.OK:
         case StatusCodes.CREATED:
         case StatusCodes.ACCEPTED:
+        case StatusCodes.NO_CONTENT:
             return message || "Request successful.";
 
         case StatusCodes.BAD_REQUEST:
