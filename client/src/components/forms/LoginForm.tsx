@@ -32,7 +32,7 @@ const loginSchema = z.object({
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 type Props = {
-    onOpenChange?: (open: boolean) => void;
+    onOpenChange?: () => void;
 };
 
 export default function LoginForm({ onOpenChange }: Props) {
