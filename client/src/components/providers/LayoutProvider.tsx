@@ -76,21 +76,21 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (pathname === "/" || pathname === "/checkout") {
         return (
-            <>
+            <div className="min-h-screen">
                 <Header />
                 {children}
                 <Footer />
                 <Toaster position="bottom-right" richColors />
-            </>
+            </div>
         );
     }
 
     if (isAuthenticated) {
         return (
-            <div className="w-full flex flex-col">
+            <div className="w-full flex flex-col min-h-screen">
                 <Header />
 
-                <SidebarProvider className="mx-auto flex flex-1 gap-3 px-4 py-3">
+                <SidebarProvider className="mx-auto flex flex-col sm:flex-row flex-1 gap-3 px-4 py-3">
                     <Sidebar />
                     <SidebarInset className="flex-1 m-0 rounded-none shadow-none overflow-auto">
                         <main className="p-4">{children}</main>
