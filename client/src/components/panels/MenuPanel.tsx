@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import ProductCard from "@/components/cards/ProductCard";
 import ProductsFilterForm, { ProductsFilterFormValues } from "@/components/forms/ProductsFilterForm";
 import { useGetProducts } from "@/hooks/product";
+import { Card, CardContent } from "@/components/ui/card";
 
 type Props = {
     onOpenProduct?: (id: number) => void;
@@ -18,7 +19,6 @@ const MenuPanel = ({ onOpenProduct }: Props) => {
         minPrice: null,
         maxPrice: null,
     });
-    console.log(productsFilter);
 
     const stringifiedProductsFilter = JSON.stringify(productsFilter);
     const productParams = React.useMemo(() => {
@@ -115,7 +115,9 @@ const MenuPanel = ({ onOpenProduct }: Props) => {
 
     return (
         <>
-            <section className="sticky top-20 z-30 border-b border-border bg-card/95 backdrop-blur py-5">
+            <section className="sticky top-20 z-30 border-b border-border bg-card/95 backdrop-blur p-4">
+            <Card className="mx-auto max-w-280">
+            <CardContent className="flex flex-col gap-3">
                 <ProductsFilterForm
                     onSuccessSubmit={(values) =>
                         setProductsFilter(
@@ -128,6 +130,8 @@ const MenuPanel = ({ onOpenProduct }: Props) => {
                         )
                     }
                 />
+                </CardContent>
+                </Card>
             </section>
 
             <section className="mx-auto max-w-6xl px-4 py-8">

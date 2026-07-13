@@ -1,11 +1,11 @@
 import { useEffect, useRef, useMemo } from "react";
 
 import { Search, X } from "lucide-react";
-import { UseFormReturn } from "react-hook-form";
+import { UseFormReturn, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -77,7 +77,9 @@ const ProductsFilterFormContent = ({
 
     const lastEmittedRef = useRef("");
 
-    const currentFilters = form.watch();
+    const currentFilters = useWatch({
+        control: form.control,
+    });
 
     useEffect(() => {
         const currentPayload = {
@@ -95,8 +97,7 @@ const ProductsFilterFormContent = ({
         }
     }, [currentFilters, onSuccessSubmit]);
     return (
-        <Card className="mx-auto max-w-6xl">
-            <CardContent className="flex flex-col gap-3">
+        <>
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <FormField
                         control={form.control}
@@ -140,8 +141,9 @@ const ProductsFilterFormContent = ({
                     <Button
                         type="button"
                         variant="outline"
-                        className="h-9 px-4 rounded-full border-transparent bg-muted/60 text-muted-foreground hover:bg-muted font-bold text-sm"
+                        className="bg-muted/60"
                         onClick={() => form.reset(initialValues)}
+                        disabled={!form.formState.isDirty}
                     >
                         <X className="mr-1 size-4" />
                         Clear
@@ -150,12 +152,17 @@ const ProductsFilterFormContent = ({
 
                 <Separator />
 
-                <div className="flex items-center justify-between gap-4">
-                    <div className="flex flex-nowrap gap-2 overflow-x-auto py-1">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-nowrap gap-2 overflow-x-auto py-1 w-full sm:w-auto">
                         <Button
                             size="sm"
                             variant={currentFilters.categoryId === null ? "primary" : "outline"}
-                            onClick={() => form.setValue("categoryId", null)}
+                            onClick={() =>
+                                form.setValue("categoryId", null, {
+                                    shouldValidate: true,
+                                    shouldDirty: true,
+                                })
+                            }
                         >
                             All
                         </Button>
@@ -168,7 +175,12 @@ const ProductsFilterFormContent = ({
                                     key={category.categoryId}
                                     variant={currentFilters.categoryId === category.categoryId ? "primary" : "outline"}
                                     className="shrink-0"
-                                    onClick={() => form.setValue("categoryId", category.categoryId)}
+                                    onClick={() =>
+                                        form.setValue("categoryId", category.categoryId, {
+                                            shouldValidate: true,
+                                            shouldDirty: true,
+                                        })
+                                    }
                                 >
                                     {category.name}
                                 </Button>
@@ -223,8 +235,7 @@ const ProductsFilterFormContent = ({
                         />
                     </div>
                 </div>
-            </CardContent>
-        </Card>
+            </>
     );
 };
 
