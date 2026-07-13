@@ -1,12 +1,11 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 
-import DataTable, {
-    defaultTableState,
-} from "@/components/data-tables/DataTable";
+import { ColumnDef } from "@tanstack/react-table";
+import { Pencil, Trash2 } from "lucide-react";
+
+import DataTable, { defaultTableState } from "@/components/data-tables/DataTable";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useDeleteOptionGroup, useGetOptionGroups } from "@/hooks/option-group";
@@ -16,12 +15,9 @@ type OptionGroupDataTableProps = {
     setOptionGroup: (optionGroup: OptionGroup) => void;
 };
 
-const OptionGroupDataTable = ({
-    setOptionGroup,
-}: OptionGroupDataTableProps) => {
+const OptionGroupDataTable = ({ setOptionGroup }: OptionGroupDataTableProps) => {
     const [tableState, setTableState] = useState(defaultTableState);
-    const { data: optionGroups = [], isLoading: optionGroupsLoading } =
-        useGetOptionGroups();
+    const { data: optionGroups = [], isLoading: optionGroupsLoading } = useGetOptionGroups();
     const { mutate: deleteOptionGroup } = useDeleteOptionGroup();
 
     const optionGroupColumns: ColumnDef<OptionGroup>[] = [
@@ -48,20 +44,10 @@ const OptionGroupDataTable = ({
             enableHiding: false,
             cell: ({ row }) => (
                 <div className="flex items-center gap-2 justify-end">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setOptionGroup(row.original)}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => setOptionGroup(row.original)}>
                         <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() =>
-                            deleteOptionGroup(row.original.optionGroupId)
-                        }
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => deleteOptionGroup(row.original.optionGroupId)}>
                         <Trash2 className="h-4 w-4" />
                     </Button>
                 </div>

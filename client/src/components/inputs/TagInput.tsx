@@ -1,7 +1,8 @@
 "use client";
 
-import { X } from "lucide-react";
 import { KeyboardEvent, useState } from "react";
+
+import { X } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -13,12 +14,7 @@ type TagInputProps = {
     disabled?: boolean;
 };
 
-export function TagInput({
-    value,
-    onChange,
-    placeholder,
-    disabled,
-}: TagInputProps) {
+const TagInput = ({ value, onChange, placeholder, disabled }: TagInputProps) => {
     const [input, setInput] = useState("");
 
     const addTag = () => {
@@ -53,18 +49,9 @@ export function TagInput({
     return (
         <div className="flex min-h-11 h-auto flex-wrap items-center gap-2 px-3 py-2 w-full h-12 rounded-xl border-2 border-input bg-background text-[0.9rem] font-medium placeholder:text-muted-foreground shadow-sm transition-colors duration-150 outline-none focus:border-primary focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 file:border-0 file:bg-transparent file:text-sm file:font-medium">
             {value.map((tag, index) => (
-                <Badge
-                    key={`${tag}-${index}`}
-                    variant="secondary"
-                    className="gap-1 rounded-md px-2 py-1"
-                >
+                <Badge key={`${tag}-${index}`} variant="secondary" className="gap-1 rounded-md px-2 py-1">
                     {tag}
-                    <button
-                        type="button"
-                        onClick={() => removeTag(index)}
-                        disabled={disabled}
-                        className="rounded-sm hover:bg-muted"
-                    >
+                    <button type="button" onClick={() => removeTag(index)} disabled={disabled} className="rounded-sm hover:bg-muted">
                         <X className="h-3 w-3" />
                     </button>
                 </Badge>
@@ -81,4 +68,6 @@ export function TagInput({
             />
         </div>
     );
-}
+};
+
+export default TagInput;

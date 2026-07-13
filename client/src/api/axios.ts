@@ -98,10 +98,7 @@ const request = async <D = unknown, T = unknown>(
 
         const message = responseMessage?.[status] ?? {
             title: handleResponseStatus(status),
-            description:
-                axiosError.response?.statusText ||
-                axiosError.message ||
-                "Something went wrong.",
+            description: axiosError.response?.statusText || axiosError.message || "Something went wrong.",
         };
 
         if (showMessage && typeof window !== "undefined") {

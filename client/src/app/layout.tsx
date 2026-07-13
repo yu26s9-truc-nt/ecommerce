@@ -21,11 +21,7 @@ const RootLayout = async ({
     children: React.ReactNode;
 }>) => {
     return (
-        <html
-            lang="en"
-            className={`${montserrat.variable} h-full antialiased`}
-            suppressHydrationWarning
-        >
+        <html lang="en" className={`${montserrat.variable} h-full antialiased`} suppressHydrationWarning>
             <body className="min-h-full flex flex-col">
                 <Provider>{children}</Provider>
             </body>

@@ -7,36 +7,25 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAddCartItem } from "@/hooks/cart";
 import type { Product } from "@/models/product";
 import type { RootState } from "@/store/store";
 
-interface ProductCardProps {
+type ProductCardProps = {
     product: Product;
     rating?: number;
     isPreview?: boolean;
-}
+};
 
-export default function ProductCard({
-    product,
-    isPreview = true,
-}: ProductCardProps) {
+const ProductCard = ({ product, isPreview = true }: ProductCardProps) => {
     const addCartMutation = useAddCartItem();
 
     const handleAddToCart = () => {
         addCartMutation.mutate(product?.productId);
     };
 
-    const { isAuthenticated } = useSelector(
-        (state: RootState) => state.authReducer
-    );
+    const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
     return (
         <Card
@@ -61,10 +50,7 @@ export default function ProductCard({
                 )}
 
                 {product?.featured && (
-                    <Badge
-                        className="absolute left-3 top-3 gap-1"
-                        variant="secondary"
-                    >
+                    <Badge className="absolute left-3 top-3 gap-1" variant="secondary">
                         <Award className="size-3.5" />
                         Featured
                     </Badge>
@@ -81,14 +67,10 @@ export default function ProductCard({
                     </span>*/}
                 </CardHeader>
 
-                <CardDescription className="mt-1 line-clamp-2 h-10">
-                    {product?.description}
-                </CardDescription>
+                <CardDescription className="mt-1 line-clamp-2 h-10">{product?.description}</CardDescription>
 
                 <div className="mt-3 flex items-center justify-between">
-                    <span className="text-lg font-extrabold text-primary">
-                        ${product?.price?.toFixed(2)}
-                    </span>
+                    <span className="text-lg font-extrabold text-primary">${product?.price?.toFixed(2)}</span>
 
                     {!isPreview && (
                         <Button
@@ -106,4 +88,6 @@ export default function ProductCard({
             </CardContent>
         </Card>
     );
-}
+};
+
+export default ProductCard;

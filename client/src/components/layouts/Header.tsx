@@ -1,14 +1,15 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 import Dialog from "@/components/dialogs/FormDialog";
-import LoginForm from "@/components/forms/LoginForm";
-import RegisterForm from "@/components/forms/RegisterForm";
+import LoginForm, { formId as loginFormId } from "@/components/forms/LoginForm";
+import RegisterForm, { formId as registerFormId } from "@/components/forms/RegisterForm";
 import CartSheet from "@/components/sheets/CartSheet";
 import { Button } from "@/components/ui/button";
 import { useGetCart } from "@/hooks/cart";
@@ -24,15 +25,10 @@ const Header = () => {
     const [cartOpen, setCartOpen] = useState(false);
     const router = useRouter();
 
-    const { isAuthenticated } = useSelector(
-        (state: RootState) => state.authReducer
-    );
+    const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
     const storedCart = useSelector((state: RootState) => state.cartReducer);
-    const totalQuantity = storedCart.items.reduce(
-        (acc, item) => acc + item.quantity,
-        0
-    );
+    const totalQuantity = storedCart.items.reduce((acc, item) => acc + item.quantity, 0);
 
     const { data: cart = DEFAULT_CART } = useGetCart(isAuthenticated);
 
@@ -59,16 +55,11 @@ const Header = () => {
 
                 <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
                     <Link href="/" className="flex shrink-0 items-center gap-2">
-                        <Button
-                            type="button"
-                            className="h-[38px] w-[38px] shadow-[0_4px_10px_rgba(218,24,132,0.4)] rounded-full"
-                        >
+                        <Button type="button" className="h-[38px] w-[38px] shadow-[0_4px_10px_rgba(218,24,132,0.4)] rounded-full">
                             D
                         </Button>
 
-                        <div className="text-2xl font-bold text-primary">
-                            Dolicious
-                        </div>
+                        <div className="text-2xl font-bold text-primary">Dolicious</div>
                     </Link>
 
                     <div className="flex-1" />
@@ -79,39 +70,22 @@ const Header = () => {
                                 <Button type="button">Account</Button>
                             </Link>
 
-                            <Button
-                                type="button"
-                                className="relative"
-                                onClick={() => setCartOpen(true)}
-                            >
+                            <Button type="button" className="relative" onClick={() => setCartOpen(true)}>
                                 🛒
-                                <span className="ml-2 rounded-full bg-white px-2 text-xs font-black text-primary">
-                                    {totalQuantity}
-                                </span>
+                                <span className="ml-2 rounded-full bg-white px-2 text-xs font-black text-primary">{totalQuantity}</span>
                             </Button>
 
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={handleLogout}
-                            >
+                            <Button type="button" variant="outline" onClick={handleLogout}>
                                 Logout
                             </Button>
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => setAuthOpen("register")}
-                            >
+                            <Button type="button" variant="outline" onClick={() => setAuthOpen("register")}>
                                 Register
                             </Button>
 
-                            <Button
-                                type="button"
-                                onClick={() => setAuthOpen("login")}
-                            >
+                            <Button type="button" onClick={() => setAuthOpen("login")}>
                                 Login
                             </Button>
                         </div>
@@ -119,27 +93,33 @@ const Header = () => {
                 </div>
             </header>
 
-            {authOpen === "login" && (
-                <Dialog
-                    open={true}
-                    onOpenChange={() => setAuthOpen("")}
-                    title="Welcome back"
-                    description="Login to view your order history"
-                >
-                    <LoginForm onOpenChange={() => setAuthOpen("")} />
-                </Dialog>
-            )}
+            <Dialog
+                open={authOpen === "login"}
+                onOpenChange={() => setAuthOpen("")}
+                title="Welcome back"
+                description="Login to view your order history"
+                footer={
+                    <Button type="submit" className="w-full" form={loginFormId}>
+                        Login
+                    </Button>
+                }
+            >
+                <LoginForm onSuccessSubmit={() => setAuthOpen("")} />
+            </Dialog>
 
-            {authOpen === "register" && (
-                <Dialog
-                    open={true}
-                    onOpenChange={() => setAuthOpen("")}
-                    title="Welcome!!!!"
-                    description="Register to explore our wonderfull menu"
-                >
-                    <RegisterForm onOpenChange={() => setAuthOpen("")} />
-                </Dialog>
-            )}
+            <Dialog
+                open={authOpen === "register"}
+                onOpenChange={() => setAuthOpen("")}
+                title="Welcome!!!"
+                description="Register to explore our wonderfull menu"
+                footer={
+                    <Button type="submit" className="w-full" form={registerFormId}>
+                        Register
+                    </Button>
+                }
+            >
+                <RegisterForm onSuccessSubmit={() => setAuthOpen("")} />
+            </Dialog>
 
             <CartSheet open={cartOpen} onOpenChange={setCartOpen} />
         </>

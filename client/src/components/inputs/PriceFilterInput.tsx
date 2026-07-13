@@ -1,7 +1,8 @@
 "use client";
 
-import { SlidersHorizontal, X } from "lucide-react";
 import * as React from "react";
+
+import { SlidersHorizontal, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,15 +22,7 @@ type PriceFilterProps = {
     currency?: string;
 };
 
-export default function PriceFilter({
-    min = 0,
-    max = 100,
-    value,
-    onChange,
-    onReset,
-    className = "",
-    currency = "$",
-}: PriceFilterProps) {
+export default function PriceFilter({ min = 0, max = 100, value, onChange, onReset, className = "", currency = "$" }: PriceFilterProps) {
     const isControlled = value !== undefined;
 
     const [internalRange, setInternalRange] = React.useState<PriceRange>({
@@ -39,8 +32,7 @@ export default function PriceFilter({
 
     const range = isControlled ? value : internalRange;
 
-    const clamp = (n: number, low: number, high: number) =>
-        Math.min(Math.max(n, low), high);
+    const clamp = (n: number, low: number, high: number) => Math.min(Math.max(n, low), high);
 
     const updateRange = (next: PriceRange) => {
         const normalized = {
@@ -77,22 +69,14 @@ export default function PriceFilter({
     };
 
     return (
-        <div
-            className={`rounded-2xl border bg-card p-4 shadow-sm ${className}`}
-        >
+        <div className={`rounded-2xl border bg-card p-4 shadow-sm ${className}`}>
             <div className="mb-4 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                     <SlidersHorizontal className="size-4 text-muted-foreground" />
                     <h3 className="text-sm font-semibold">Price filter</h3>
                 </div>
 
-                <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 px-2 text-muted-foreground"
-                    onClick={reset}
-                >
+                <Button type="button" variant="ghost" size="sm" className="h-8 px-2 text-muted-foreground" onClick={reset}>
                     <X className="mr-1 size-4" />
                     Reset
                 </Button>
@@ -111,31 +95,13 @@ export default function PriceFilter({
 
             <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground">
-                        Min
-                    </label>
-                    <Input
-                        type="number"
-                        min={min}
-                        max={max}
-                        step="0.01"
-                        value={range.min}
-                        onChange={handleMinChange}
-                    />
+                    <label className="text-xs font-medium text-muted-foreground">Min</label>
+                    <Input type="number" min={min} max={max} step="0.01" value={range.min} onChange={handleMinChange} />
                 </div>
 
                 <div className="space-y-1">
-                    <label className="text-xs font-medium text-muted-foreground">
-                        Max
-                    </label>
-                    <Input
-                        type="number"
-                        min={min}
-                        max={max}
-                        step="0.01"
-                        value={range.max}
-                        onChange={handleMaxChange}
-                    />
+                    <label className="text-xs font-medium text-muted-foreground">Max</label>
+                    <Input type="number" min={min} max={max} step="0.01" value={range.max} onChange={handleMaxChange} />
                 </div>
             </div>
         </div>

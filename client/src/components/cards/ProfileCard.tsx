@@ -16,7 +16,18 @@ const ProfileCard = ({ profile, isLoading }: ProfileCardProps) => {
                     <CardTitle>Profile</CardTitle>
                 </CardHeader>
                 <FormLoader isLoading={isLoading} skeletonRows={[2, 2, 1, 3]}>
-                    <ProfileForm profile={profile} />
+                    <ProfileForm
+                        initialValues={{
+                            firstName: profile?.firstName ?? "",
+                            lastName: profile?.lastName ?? "",
+                            phone: profile?.phone ?? "",
+                            email: profile?.email ?? "",
+                            address: profile?.address ?? "",
+                            city: profile?.city ?? "",
+                            state: profile?.state ?? "",
+                            zip: profile?.zip ?? "",
+                        }}
+                    />
                 </FormLoader>
             </CardContent>
         </Card>

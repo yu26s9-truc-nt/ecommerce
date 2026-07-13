@@ -38,9 +38,7 @@ const authSlice = createSlice({
 
             state.userID = user.id;
             state.username = user.username;
-            state.authorities = user.authorities.map(
-                (authority) => authority.name
-            );
+            state.authorities = user.authorities.map((authority) => authority.name);
             state.isAuthenticated = true;
         },
 

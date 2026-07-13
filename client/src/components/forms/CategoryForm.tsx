@@ -1,95 +1,81 @@
-"use client";
-"use no memo";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Category } from "@/models/category";
+import { useCreateCategory, useUpdateCategoryFull } from "@/hooks/category";
+
+import Form, { FormProps } from "./Form";
+
+export const formId = "category-form";
 
 const categorySchema = z.object({
-    name: z
-        .string()
-        .trim()
-        .min(2, "Category name must be at least 2 characters."),
+    name: z.string().trim().min(2, "Category name must be at least 2 characters."),
     description: z.string().trim().default(""),
 });
 
-type CategoryFormInput = z.input<typeof categorySchema>;
-export type CategoryFormValues = z.output<typeof categorySchema>;
+type CategoryFormValues = z.output<typeof categorySchema>;
 
-type CategoryFormProps = {
-    formId: string;
-    category: Category | null;
-    onSubmit: (values: CategoryFormValues) => void | Promise<void>;
+type CategoryFormProps = FormProps<typeof categorySchema> & {
+    id: number | null;
 };
 
-export default function CategoryForm({
-    formId,
-    onSubmit,
-    category,
-}: CategoryFormProps) {
-    const form = useForm<CategoryFormInput, undefined, CategoryFormValues>({
-        resolver: zodResolver(categorySchema),
-        defaultValues: {
-            name: category?.name ?? "",
-            description: category?.description ?? "",
-        },
-    });
+const CategoryForm = ({ id, initialValues, onSuccessSubmit }: CategoryFormProps) => {
+    const { mutate: createCategory } = useCreateCategory();
+    const { mutate: updateCategory } = useUpdateCategoryFull(id ?? 0);
 
-    const handleSubmit = async (values: CategoryFormValues) => {
-        await onSubmit(values);
+    const handleFormSubmit = (values: CategoryFormValues) => {
+        const options = {
+            onSuccess: () => {
+                onSuccessSubmit?.();
+            },
+            onError: (error: unknown) => {
+                console.error("Category submission failed:", error);
+            },
+        };
+
+        if (id) {
+            updateCategory(values, options);
+        } else {
+            createCategory(values, options);
+        }
     };
 
     return (
-        <Form {...form}>
-            <form
-                id={formId}
-                onSubmit={form.handleSubmit(handleSubmit)}
-                className="space-y-4"
-            >
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Category Name</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Smoothies" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+        <Form id={formId} schema={categorySchema} onSubmit={handleFormSubmit} initialValues={initialValues ?? {}}>
+            {(form) => (
+                <>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Category Name</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Smoothies" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Description</FormLabel>
-                            <FormControl>
-                                <Textarea
-                                    placeholder="A short description for this category"
-                                    rows={3}
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </form>
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder="A short description for this category" rows={3} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </>
+            )}
         </Form>
     );
-}
+};
+
+export default CategoryForm;

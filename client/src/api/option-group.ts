@@ -1,11 +1,7 @@
 // src/api/optionGroups.ts
 import { StatusCodes } from "http-status-codes";
 
-import type {
-    OptionGroup,
-    OptionGroupCreateRequest,
-    OptionGroupUpdateRequest,
-} from "@/models/option-group";
+import type { OptionGroup, OptionGroupCreateRequest, OptionGroupUpdateRequest } from "@/models/option-group";
 
 import request from "./axios";
 
@@ -35,20 +31,14 @@ export const createOptionGroup = (data: OptionGroupCreateRequest) =>
         }
     );
 
-export const putOptionGroup = (
-    optionGroupId: number,
-    data: OptionGroupUpdateRequest
-) =>
+export const putOptionGroup = (optionGroupId: number, data: OptionGroupUpdateRequest) =>
     request<OptionGroupUpdateRequest, OptionGroup>({
         url: `option-groups/${optionGroupId}`,
         method: "put",
         data,
     });
 
-export const patchOptionGroup = (
-    optionGroupId: number,
-    data: Partial<OptionGroupUpdateRequest>
-) =>
+export const patchOptionGroup = (optionGroupId: number, data: Partial<OptionGroupUpdateRequest>) =>
     request<Partial<OptionGroupUpdateRequest>, OptionGroup>({
         url: `option-groups/${optionGroupId}`,
         method: "patch",

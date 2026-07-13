@@ -1,7 +1,8 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useState } from "react";
+
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 
 import LayoutProvider from "./LayoutProvider";
@@ -23,12 +24,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="light"
-                enableSystem
-                disableTransitionOnChange
-            >
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
                 <StoreProvider>
                     <LayoutProvider>{children}</LayoutProvider>
                 </StoreProvider>

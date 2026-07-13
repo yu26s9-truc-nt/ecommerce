@@ -1,12 +1,6 @@
 "use client";
 
-import {
-    Boxes,
-    FolderTree,
-    type LucideIcon,
-    Package,
-    ShoppingBag,
-} from "lucide-react";
+import { Boxes, FolderTree, type LucideIcon, Package, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -83,14 +77,11 @@ const adminMenuItems: IMenuItem[] = [
 ];
 
 const AppSidebarMenu = () => {
-    const { authorities } = useSelector(
-        (state: RootState) => state.authReducer
-    );
+    const { authorities } = useSelector((state: RootState) => state.authReducer);
 
     const pathname = usePathname();
 
-    const isAdmin =
-        authorities?.includes("ROLE_ADMIN") || authorities?.includes("ADMIN");
+    const isAdmin = authorities?.includes("ROLE_ADMIN") || authorities?.includes("ADMIN");
 
     let menuItems = userMenuItems;
 
@@ -102,10 +93,7 @@ const AppSidebarMenu = () => {
         <SidebarMenu>
             {menuItems.map(({ title, url, icon: Icon, sub }) => (
                 <SidebarMenuItem key={title}>
-                    <SidebarMenuButton
-                        asChild
-                        isActive={url ? pathname.startsWith(url) : false}
-                    >
+                    <SidebarMenuButton asChild isActive={url ? pathname.startsWith(url) : false}>
                         <Link href={url ?? "#"}>
                             <Icon />
                             {title}
@@ -116,10 +104,7 @@ const AppSidebarMenu = () => {
                         <SidebarMenuSub>
                             {sub.map(({ title, url }) => (
                                 <SidebarMenuSubItem key={title}>
-                                    <SidebarMenuSubButton
-                                        asChild
-                                        isActive={pathname.startsWith(url)}
-                                    >
+                                    <SidebarMenuSubButton asChild isActive={pathname.startsWith(url)}>
                                         <Link href={url}>{title}</Link>
                                     </SidebarMenuSubButton>
                                 </SidebarMenuSubItem>

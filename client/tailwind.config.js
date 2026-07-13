@@ -1,10 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: [
-        "./src/app/**/*.{js,ts,jsx,tsx}",
-        "./src/components/**/*.{js,ts,jsx,tsx}",
-        "./src/lib/**/*.{js,ts,jsx,tsx}",
-    ],
+    content: ["./src/app/**/*.{js,ts,jsx,tsx}", "./src/components/**/*.{js,ts,jsx,tsx}", "./src/lib/**/*.{js,ts,jsx,tsx}"],
     theme: {
         extend: {
             colors: {
@@ -28,8 +24,7 @@ module.exports = {
                 "accent-foreground": "var(--accent-foreground, #ffffff)",
 
                 destructive: "var(--destructive, #ef4444)",
-                "destructive-foreground":
-                    "var(--destructive-foreground, #ffffff)",
+                "destructive-foreground": "var(--destructive-foreground, #ffffff)",
 
                 muted: "var(--muted, #f3e8ec)",
                 "muted-foreground": "var(--muted-foreground, #6b5a52)",

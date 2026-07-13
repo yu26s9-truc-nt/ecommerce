@@ -1,11 +1,10 @@
 "use client";
-import { ColumnDef } from "@tanstack/react-table";
-import { Pencil, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 
-import DataTable, {
-    defaultTableState,
-} from "@/components/data-tables/DataTable";
+import { ColumnDef } from "@tanstack/react-table";
+import { Pencil, Trash2 } from "lucide-react";
+
+import DataTable, { defaultTableState } from "@/components/data-tables/DataTable";
 import { Button } from "@/components/ui/button";
 import { useDeleteCategory, useGetCategories } from "@/hooks/category";
 import { Category } from "@/models/category";
@@ -16,8 +15,7 @@ type CategoryDataTableProps = {
 
 const CategoryDataTable = ({ setCategory }: CategoryDataTableProps) => {
     const [tableState, setTableState] = useState(defaultTableState);
-    const { data: categories = [], isLoading: categoriesLoading } =
-        useGetCategories();
+    const { data: categories = [], isLoading: categoriesLoading } = useGetCategories();
     const { mutate: deleteCategory } = useDeleteCategory();
 
     const productDataTableColumn: ColumnDef<Category>[] = [
@@ -44,11 +42,7 @@ const CategoryDataTable = ({ setCategory }: CategoryDataTableProps) => {
                     >
                         <Pencil className="h-4 w-4" />
                     </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => deleteCategory(row.original.categoryId)}
-                    >
+                    <Button variant="ghost" size="icon" onClick={() => deleteCategory(row.original.categoryId)}>
                         <Trash2 className="h-4 w-4" />
                     </Button>
                 </div>

@@ -1,10 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 
-import type {
-    Category,
-    CategoryCreateRequest,
-    CategoryUpdateRequest,
-} from "@/models/category";
+import type { Category, CategoryCreateRequest, CategoryUpdateRequest } from "@/models/category";
 
 import request from "./axios";
 
@@ -47,10 +43,7 @@ export const putCategory = (categoryId: number, data: CategoryUpdateRequest) =>
         data,
     });
 
-export const patchCategory = (
-    categoryId: number,
-    data: CategoryUpdateRequest
-) =>
+export const patchCategory = (categoryId: number, data: CategoryUpdateRequest) =>
     request<CategoryUpdateRequest, Category>({
         url: `categories/${categoryId}`,
         method: "patch",

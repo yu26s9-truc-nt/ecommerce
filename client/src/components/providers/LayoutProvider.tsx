@@ -1,7 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+
+import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Toaster } from "sonner";
 
@@ -27,10 +28,7 @@ const decodeJwtPayload = (token: string): JwtPayload | null => {
         }
 
         const normalizedPayload = payload.replace(/-/g, "+").replace(/_/g, "/");
-        const paddedPayload = normalizedPayload.padEnd(
-            Math.ceil(normalizedPayload.length / 4) * 4,
-            "="
-        );
+        const paddedPayload = normalizedPayload.padEnd(Math.ceil(normalizedPayload.length / 4) * 4, "=");
 
         return JSON.parse(atob(paddedPayload)) as JwtPayload;
     } catch {
@@ -42,9 +40,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
     const pathname = usePathname();
     const dispatch = useDispatch();
 
-    const { isAuthenticated } = useSelector(
-        (state: RootState) => state.authReducer
-    );
+    const { isAuthenticated } = useSelector((state: RootState) => state.authReducer);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -58,9 +54,7 @@ const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         const payload = decodeJwtPayload(token);
-        const isExpired = payload?.exp
-            ? payload.exp * 1000 <= Date.now()
-            : false;
+        const isExpired = payload?.exp ? payload.exp * 1000 <= Date.now() : false;
 
         if (!payload?.sub || isExpired) {
             dispatch(setLogout());

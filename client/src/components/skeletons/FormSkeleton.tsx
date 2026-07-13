@@ -7,10 +7,7 @@ type FormSkeletonProps = {
     showSubmit?: boolean;
 };
 
-export default function FormSkeleton({
-    rows = [1],
-    showSubmit = true,
-}: FormSkeletonProps) {
+const FormSkeleton = ({ rows = [1], showSubmit = true }: FormSkeletonProps) => {
     return (
         <div className="space-y-4">
             {rows.map((fieldCount, rowIndex) => (
@@ -33,4 +30,6 @@ export default function FormSkeleton({
             {showSubmit && <Skeleton className="h-9 w-full" />}
         </div>
     );
-}
+};
+
+export default FormSkeleton;

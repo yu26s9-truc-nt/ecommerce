@@ -9,16 +9,9 @@ type FormLoaderProps = {
     children: React.ReactNode;
 };
 
-export default function FormLoader({
-    isLoading,
-    skeletonRows = [1],
-    showSubmitSkeleton = true,
-    children,
-}: FormLoaderProps) {
+export default function FormLoader({ isLoading, skeletonRows = [1], showSubmitSkeleton = true, children }: FormLoaderProps) {
     if (isLoading) {
-        return (
-            <FormSkeleton rows={skeletonRows} showSubmit={showSubmitSkeleton} />
-        );
+        return <FormSkeleton rows={skeletonRows} showSubmit={showSubmitSkeleton} />;
     }
 
     return <>{children}</>;

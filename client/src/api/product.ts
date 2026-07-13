@@ -1,11 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 
-import {
-    Product,
-    ProductCreateRequest,
-    ProductFilterRequest,
-    ProductUpdateRequest,
-} from "@/models/product";
+import { Product, ProductCreateRequest, ProductFilterRequest, ProductUpdateRequest } from "@/models/product";
 
 import request from "./axios";
 

@@ -62,16 +62,11 @@ export const login = (data: LoginRequest) =>
             [StatusCodes.OK]: {
                 title: "Login successfully!!",
             },
-        },
-        true
+        }
     );
 
 export const getAccessToken = () =>
-    request<undefined, string>(
-        {
-            url: "auth/access-token",
-            method: "post",
-        },
-        undefined,
-        false
-    );
+    request<undefined, string>({
+        url: "auth/access-token",
+        method: "post",
+    });

@@ -15,6 +15,5 @@ export const createOrder = (data: OrderCreateRequest) =>
             [StatusCodes.CREATED]: {
                 title: "Created order successfully",
             },
-        },
-        true
+        }
     );

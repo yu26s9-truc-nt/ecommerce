@@ -1,11 +1,13 @@
 import HeroPanel from "@/components/panels/HeroPanel";
 import MenuPanel from "@/components/panels/MenuPanel";
 
-export default function Home() {
+const Page = () => {
     return (
         <>
             <HeroPanel />
             <MenuPanel />
         </>
     );
-}
+};
+
+export default Page;

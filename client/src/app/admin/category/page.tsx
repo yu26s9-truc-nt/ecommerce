@@ -4,39 +4,12 @@ import { useState } from "react";
 
 import CategoryDataTable from "@/components/data-tables/CategoryDataTable";
 import Dialog from "@/components/dialogs/FormDialog";
-import CategoryForm, {
-    CategoryFormValues,
-} from "@/components/forms/CategoryForm";
+import CategoryForm, { formId } from "@/components/forms/CategoryForm";
 import { Button } from "@/components/ui/button";
-import { useCreateCategory, useUpdateCategoryFull } from "@/hooks/category";
 import { Category } from "@/models/category";
 
-export default function Page() {
+const Page = () => {
     const [category, setCategory] = useState<Category | null>(null);
-    const formId = "product-form";
-
-    const { mutate: createCategory } = useCreateCategory();
-
-    const { mutate: updateCategory } = useUpdateCategoryFull(
-        category?.categoryId ?? 0
-    );
-
-    const handleFormSubmit = (values: CategoryFormValues) => {
-        const options = {
-            onSuccess: () => {
-                setCategory(null);
-            },
-            onError: (error: unknown) => {
-                console.error("Category submission failed:", error);
-            },
-        };
-
-        if (category && category.categoryId) {
-            updateCategory(values, options);
-        } else {
-            createCategory(values, options);
-        }
-    };
 
     return (
         <div className="space-y-4">
@@ -51,12 +24,17 @@ export default function Page() {
                 }
             >
                 <CategoryForm
-                    formId={formId}
-                    category={category}
-                    onSubmit={handleFormSubmit}
+                    id={category?.categoryId ?? null}
+                    initialValues={{
+                        name: category?.name ?? "",
+                        description: category?.description ?? "",
+                    }}
+                    onSuccessSubmit={() => setCategory(null)}
                 />
             </Dialog>
             <CategoryDataTable setCategory={setCategory} />
         </div>
     );
-}
+};
+
+export default Page;

@@ -1,6 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { createProduct, getProducts } from "@/api/product";
+import { getProducts } from "@/api/product";
+import { createProduct, deleteProduct, putProduct } from "@/api/product";
+import type { ProductUpdateRequest } from "@/models/product";
 
 export const productKeys = {
     all: ["products"] as const,
@@ -16,66 +19,59 @@ type Params = {
 
 export const useGetProducts = (params?: Params) => {
     return useQuery({
-        queryKey: ["products", params],
+        queryKey: [...productKeys.all, params],
         queryFn: () => getProducts(params),
         select: (res) => res.data,
     });
 };
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { deleteProduct, putProduct } from "@/api/product";
-import type {
-    Product,
-    ProductCreateRequest,
-    ProductUpdateRequest,
-} from "@/models/product";
-
-export function useCreateProduct() {
+export const useCreateProduct = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: ProductCreateRequest) => {
-            const response = await createProduct(data);
-            return response.data;
-        },
-        onSuccess: (createdProduct: Product) => {
-            queryClient.invalidateQueries({ queryKey: productKeys.all });
-            queryClient.setQueryData(
-                productKeys.detail(createdProduct.productId),
-                createdProduct
-            );
-        },
-    });
-}
+        mutationFn: createProduct,
+        onSuccess: (res) => {
+            const product = res.data;
 
-export const useUpdateProductFull = (productId: number) => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: async (data: ProductUpdateRequest) => {
-            const response = await putProduct(productId, data);
-            return response.data;
-        },
-        onSuccess: (updatedProduct: Product) => {
-            queryClient.invalidateQueries({ queryKey: productKeys.all });
-            queryClient.setQueryData(
-                productKeys.detail(updatedProduct.productId),
-                updatedProduct
-            );
+            queryClient.invalidateQueries({
+                queryKey: productKeys.all,
+            });
+
+            queryClient.setQueryData(productKeys.detail(product.productId), product);
         },
     });
 };
 
-export function useDeleteProduct() {
+export const useUpdateProductFull = (productId: number) => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (productId: number) => deleteProduct(productId),
-        onSuccess: (_data, productId) => {
-            queryClient.invalidateQueries({ queryKey: productKeys.all });
+        mutationFn: (data: ProductUpdateRequest) => putProduct(productId, data),
+        onSuccess: (res) => {
+            const product = res.data;
+
+            queryClient.invalidateQueries({
+                queryKey: productKeys.all,
+            });
+
+            queryClient.setQueryData(productKeys.detail(product.productId), product);
+        },
+    });
+};
+
+export const useDeleteProduct = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: deleteProduct,
+        onSuccess: (_, productId) => {
+            queryClient.invalidateQueries({
+                queryKey: productKeys.all,
+            });
+
             queryClient.removeQueries({
                 queryKey: productKeys.detail(productId),
             });
         },
     });
-}
+};
