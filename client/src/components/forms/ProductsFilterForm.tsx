@@ -5,7 +5,6 @@ import { UseFormReturn, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -98,21 +97,21 @@ const ProductsFilterFormContent = ({
     }, [currentFilters, onSuccessSubmit]);
     return (
         <>
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <FormField
-                        control={form.control}
-                        name="search"
-                        render={({ field }) => (
-                            <FormItem className="relative flex-1">
-                                <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-                                <FormControl>
-                                    <Input {...field} placeholder="Search coffee, donuts, drinks..." className="pl-11" value={field.value ?? ""} />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <FormField
+                    control={form.control}
+                    name="search"
+                    render={({ field }) => (
+                        <FormItem className="relative flex-1">
+                            <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+                            <FormControl>
+                                <Input {...field} placeholder="Search coffee, donuts, drinks..." className="pl-11" value={field.value ?? ""} />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
 
-                    {/*<FormField
+                {/*<FormField
                                     control={form.control}
                                     name="sort"
                                     render={({ field }) => (
@@ -138,104 +137,104 @@ const ProductsFilterFormContent = ({
                                     )}
                                 />*/}
 
+                <Button
+                    type="button"
+                    variant="outline"
+                    className="bg-muted/60"
+                    onClick={() => form.reset(initialValues)}
+                    disabled={!form.formState.isDirty}
+                >
+                    <X className="mr-1 size-4" />
+                    Clear
+                </Button>
+            </div>
+
+            <Separator />
+
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-nowrap gap-2 overflow-x-auto py-1 w-full sm:w-auto">
                     <Button
-                        type="button"
-                        variant="outline"
-                        className="bg-muted/60"
-                        onClick={() => form.reset(initialValues)}
-                        disabled={!form.formState.isDirty}
+                        size="sm"
+                        variant={currentFilters.categoryId === null ? "primary" : "outline"}
+                        onClick={() =>
+                            form.setValue("categoryId", null, {
+                                shouldValidate: true,
+                                shouldDirty: true,
+                            })
+                        }
                     >
-                        <X className="mr-1 size-4" />
-                        Clear
+                        All
                     </Button>
+
+                    {categoriesLoading ? (
+                        <span className="text-sm text-muted-foreground self-center">Loading...</span>
+                    ) : (
+                        categories.map((category) => (
+                            <Button
+                                key={category.categoryId}
+                                variant={currentFilters.categoryId === category.categoryId ? "primary" : "outline"}
+                                className="shrink-0"
+                                onClick={() =>
+                                    form.setValue("categoryId", category.categoryId, {
+                                        shouldValidate: true,
+                                        shouldDirty: true,
+                                    })
+                                }
+                            >
+                                {category.name}
+                            </Button>
+                        ))
+                    )}
                 </div>
-
-                <Separator />
-
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex flex-nowrap gap-2 overflow-x-auto py-1 w-full sm:w-auto">
-                        <Button
-                            size="sm"
-                            variant={currentFilters.categoryId === null ? "primary" : "outline"}
-                            onClick={() =>
-                                form.setValue("categoryId", null, {
-                                    shouldValidate: true,
-                                    shouldDirty: true,
-                                })
-                            }
-                        >
-                            All
-                        </Button>
-
-                        {categoriesLoading ? (
-                            <span className="text-sm text-muted-foreground self-center">Loading...</span>
-                        ) : (
-                            categories.map((category) => (
-                                <Button
-                                    key={category.categoryId}
-                                    variant={currentFilters.categoryId === category.categoryId ? "primary" : "outline"}
-                                    className="shrink-0"
-                                    onClick={() =>
-                                        form.setValue("categoryId", category.categoryId, {
-                                            shouldValidate: true,
-                                            shouldDirty: true,
-                                        })
-                                    }
-                                >
-                                    {category.name}
-                                </Button>
-                            ))
+                <div className="flex items-center gap-2">
+                    <FormField
+                        control={form.control}
+                        name="minPrice"
+                        render={({ field: { value, onChange, ...rest } }) => (
+                            <FormItem className="space-y-0">
+                                <FormControl>
+                                    <Input
+                                        type="number"
+                                        step="0.01"
+                                        className="w-30"
+                                        {...rest}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            onChange(val === "" ? null : parseFloat(val));
+                                        }}
+                                        value={value === null || typeof value === "object" ? "" : (value as number)}
+                                    />
+                                </FormControl>
+                            </FormItem>
                         )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <FormField
-                            control={form.control}
-                            name="minPrice"
-                            render={({ field: { value, onChange, ...rest } }) => (
-                                <FormItem className="space-y-0">
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            step="0.01"
-                                            className="w-30"
-                                            {...rest}
-                                            onChange={(e) => {
-                                                const val = e.target.value;
-                                                onChange(val === "" ? null : parseFloat(val));
-                                            }}
-                                            value={value === null || typeof value === "object" ? "" : (value as number)}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
+                    />
 
-                        <span className="text-muted-foreground">–</span>
+                    <span className="text-muted-foreground">–</span>
 
-                        <FormField
-                            control={form.control}
-                            name="maxPrice"
-                            render={({ field: { value, onChange, ...rest } }) => (
-                                <FormItem className="space-y-0">
-                                    <FormControl>
-                                        <Input
-                                            type="number"
-                                            step="0.01"
-                                            className="w-30"
-                                            {...rest}
-                                            onChange={(e) => {
-                                                const val = e.target.value;
-                                                onChange(val === "" ? null : parseFloat(val));
-                                            }}
-                                            value={value === null || typeof value === "object" ? "" : (value as number)}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                    <FormField
+                        control={form.control}
+                        name="maxPrice"
+                        render={({ field: { value, onChange, ...rest } }) => (
+                            <FormItem className="space-y-0">
+                                <FormControl>
+                                    <Input
+                                        type="number"
+                                        step="0.01"
+                                        className="w-30"
+                                        {...rest}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            onChange(val === "" ? null : parseFloat(val));
+                                        }}
+                                        value={value === null || typeof value === "object" ? "" : (value as number)}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
                 </div>
-            </>
+            </div>
+        </>
     );
 };
 

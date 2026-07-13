@@ -4,8 +4,8 @@ import React, { useState } from "react";
 
 import ProductCard from "@/components/cards/ProductCard";
 import ProductsFilterForm, { ProductsFilterFormValues } from "@/components/forms/ProductsFilterForm";
-import { useGetProducts } from "@/hooks/product";
 import { Card, CardContent } from "@/components/ui/card";
+import { useGetProducts } from "@/hooks/product";
 
 type Props = {
     onOpenProduct?: (id: number) => void;
@@ -116,21 +116,21 @@ const MenuPanel = ({ onOpenProduct }: Props) => {
     return (
         <>
             <section className="sticky top-20 z-30 border-b border-border bg-card/95 backdrop-blur p-4">
-            <Card className="mx-auto max-w-280">
-            <CardContent className="flex flex-col gap-3">
-                <ProductsFilterForm
-                    onSuccessSubmit={(values) =>
-                        setProductsFilter(
-                            values ?? {
-                                search: null,
-                                categoryId: null,
-                                minPrice: null,
-                                maxPrice: null,
+                <Card className="mx-auto max-w-280 bg-transparent">
+                    <CardContent className="flex flex-col gap-3">
+                        <ProductsFilterForm
+                            onSuccessSubmit={(values) =>
+                                setProductsFilter(
+                                    values ?? {
+                                        search: null,
+                                        categoryId: null,
+                                        minPrice: null,
+                                        maxPrice: null,
+                                    }
+                                )
                             }
-                        )
-                    }
-                />
-                </CardContent>
+                        />
+                    </CardContent>
                 </Card>
             </section>
 
