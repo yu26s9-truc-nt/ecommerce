@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { useGetOrders } from "@/hooks/order";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+
 import FormLoader from "@/components/loaders/FormLoader";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useGetOrders } from "@/hooks/order";
 
 export default function UserOrdersPage() {
     const { data: response, isLoading, error } = useGetOrders();
@@ -41,9 +42,7 @@ export default function UserOrdersPage() {
                         <CardHeader className="bg-muted/30 py-4 px-4">
                             <div className="flex justify-between items-center">
                                 <CardTitle className="text-lg">Order #{order.orderId}</CardTitle>
-                                <span className="text-sm text-muted-foreground">
-                                    {new Date(order.date).toLocaleDateString()}
-                                </span>
+                                <span className="text-sm text-muted-foreground">{new Date(order.date).toLocaleDateString()}</span>
                             </div>
                         </CardHeader>
                         <CardContent className="pt-4">

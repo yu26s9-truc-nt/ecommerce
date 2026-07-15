@@ -18,9 +18,7 @@ export const createOrder = (data: OrderCreateRequest) =>
         }
     );
 export const getOrders = () =>
-    request<void, Order[]>(
-        {
-            url: "orders",
-            method: "get",
-        }
-    );
+    request<void, Order[]>({
+        url: "orders",
+        method: "get",
+    });
