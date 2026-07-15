@@ -14,7 +14,7 @@ export default function UserOrdersPage() {
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-full min-h-[50vh]">
-                <FormLoader />
+                Loading...
             </div>
         );
     }
