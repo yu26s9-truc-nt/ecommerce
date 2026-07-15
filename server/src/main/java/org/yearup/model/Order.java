@@ -9,6 +9,8 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -51,10 +53,13 @@ public class Order {
     @Column(name = "shipping_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal shippingAmount;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<OrderLineItem> orderLineItems = new ArrayList<>();
     public Order() {
     }
 
-    public Order(int userId, LocalDateTime date, String address, String city, String state, String zip, BigDecimal shippingAmount) {
+
+    public Order(Integer userId, LocalDateTime date, String address, String city, String state, String zip, BigDecimal shippingAmount) {
         this.userId = userId;
         this.date = date;
         this.address = address;
@@ -62,6 +67,14 @@ public class Order {
         this.state = state;
         this.zip = zip;
         this.shippingAmount = shippingAmount;
+    }
+
+    public List<OrderLineItem> getOrderLineItems() {
+        return orderLineItems;
+    }
+
+    public void setOrderLineItems(List<OrderLineItem> orderLineItems) {
+        this.orderLineItems = orderLineItems;
     }
 
     public int getOrderId() {
@@ -126,5 +139,26 @@ public class Order {
 
     public void setShippingAmount(BigDecimal shippingAmount) {
         this.shippingAmount = shippingAmount;
+    }
+    public BigDecimal getTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+
+        if (this.orderLineItems != null) {
+            for (OrderLineItem item : this.orderLineItems) {
+                BigDecimal itemTotal = item.getSalesPrice().multiply(new BigDecimal(item.getQuantity()));
+
+                if (item.getDiscount() != null) {
+                    itemTotal = itemTotal.subtract(item.getDiscount());
+                }
+
+                total = total.add(itemTotal);
+            }
+        }
+
+        if (this.shippingAmount != null) {
+            total = total.add(this.shippingAmount);
+        }
+
+        return total;
     }
 }

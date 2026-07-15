@@ -12,6 +12,7 @@ import org.yearup.service.OrderService;
 import org.yearup.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("orders")
@@ -36,5 +37,13 @@ public class OrderController {
         } catch (IllegalStateException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+    @GetMapping()
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<Order>> getOrders(Principal principal) {
+        String userName = principal.getName();
+        int userId = userService.getIdByUsername(userName);
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        return ResponseEntity.ok(orders);
     }
 }

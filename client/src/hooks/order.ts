@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { createOrder } from "@/api/order";
+import { createOrder, getOrders } from "@/api/order";
 import type { Cart } from "@/models/cart";
 
 import { cartQueryKey } from "./cart";
@@ -16,5 +16,11 @@ export const useCreateOrder = () => {
                 total: 0,
             });
         },
+    });
+};
+export const useGetOrders = () => {
+    return useQuery({
+        queryKey: ["orders"],
+        queryFn: getOrders,
     });
 };
