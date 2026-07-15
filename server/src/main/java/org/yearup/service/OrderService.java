@@ -14,6 +14,7 @@ import org.yearup.repository.OrderLineItemRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.util.Assert.hasText;
@@ -63,9 +64,10 @@ public class OrderService {
         );
         Order saved = orderRepository.save(order);
 
-        for(CartItemDTO item: cart.getItems().values()){
+        for(CartItemDTO item : cart.getItems().values()){
             OrderLineItem newItem = new OrderLineItem(
-                    saved.getOrderId(),
+                    0,
+                    saved,
                     item.getProductId(),
                     item.getLineTotal(),
                     item.getQuantity(),
@@ -77,5 +79,9 @@ public class OrderService {
         cartService.deleteCart(userId);
         return saved;
 
+    }
+    @Transactional(readOnly = true)
+    public List<Order> getOrdersByUserId(int userId) {
+        return orderRepository.findByUserId(userId);
     }
 }
