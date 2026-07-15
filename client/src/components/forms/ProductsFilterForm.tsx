@@ -1,12 +1,13 @@
 import { useEffect, useRef, useMemo } from "react";
 
-import { Search, X } from "lucide-react";
+import { Search, X, Star } from "lucide-react";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { useGetCategories } from "@/hooks/category";
 
@@ -17,6 +18,7 @@ export const formId = "product-filter-form";
 export const productsFilterSchema = z
     .object({
         search: z.string().nullable().default(null),
+        sort: z.string().nullable().default(null),
         categoryId: z.coerce.number().positive().nullable().default(null),
         minPrice: z.number().min(0).nullable().default(null),
         maxPrice: z.number().min(0).nullable().default(null),
@@ -41,6 +43,7 @@ const ProductsFilterForm = ({ onSuccessSubmit }: ProductsFilterFormProps) => {
     const initialValues = useMemo(
         () => ({
             search: null,
+            sort: null,
             categoryId: null,
             minPrice: null,
             maxPrice: null,
@@ -65,6 +68,7 @@ const ProductsFilterFormContent = ({
     const initialValues = useMemo(
         () => ({
             search: null,
+            sort: null,
             categoryId: null,
             minPrice: null,
             maxPrice: null,
@@ -83,6 +87,7 @@ const ProductsFilterFormContent = ({
     useEffect(() => {
         const currentPayload = {
             search: currentFilters.search ?? null,
+            sort: currentFilters.sort ?? null,
             categoryId: (currentFilters.categoryId ?? null) as number,
             minPrice: (currentFilters.minPrice ?? null) as number,
             maxPrice: (currentFilters.maxPrice ?? null) as number,
@@ -111,31 +116,31 @@ const ProductsFilterFormContent = ({
                     )}
                 />
 
-                {/*<FormField
-                                    control={form.control}
-                                    name="sort"
-                                    render={({ field }) => (
-                                        <FormItem className="space-y-0">
-                                            <Select value={field.value} onValueChange={field.onChange}>
-                                                <FormControl>
-                                                    <SelectTrigger className="h-12 w-full sm:w-64">
-                                                        <SelectValue />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    <SelectItem value="popular">
-                                                        <div className="flex items-center gap-2">
-                                                            <Star className="size-4 fill-current" />
-                                                            Most Popular
-                                                        </div>
-                                                    </SelectItem>
-                                                    <SelectItem value="low-high">Price: Low → High</SelectItem>
-                                                    <SelectItem value="high-low">Price: High → Low</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormItem>
-                                    )}
-                                />*/}
+                <FormField
+                    control={form.control}
+                    name="sort"
+                    render={({ field }) => (
+                        <FormItem className="space-y-0">
+                            <Select value={field.value ?? undefined} onValueChange={field.onChange}>
+                                <FormControl>
+                                    <SelectTrigger className="h-12 w-full sm:w-64">
+                                        <SelectValue placeholder="Sort by" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="featured">
+                                        <div className="flex items-center gap-2">
+                                            <Star className="size-4 fill-current" />
+                                            Most Popular
+                                        </div>
+                                    </SelectItem>
+                                    <SelectItem value="price,asc">Price: Low → High</SelectItem>
+                                    <SelectItem value="price,desc">Price: High → Low</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </FormItem>
+                    )}
+                />
 
                 <Button
                     type="button"
@@ -197,6 +202,7 @@ const ProductsFilterFormContent = ({
                                         type="number"
                                         step="0.01"
                                         className="w-30"
+                                        placeholder="Min price"
                                         {...rest}
                                         onChange={(e) => {
                                             const val = e.target.value;
@@ -221,6 +227,7 @@ const ProductsFilterFormContent = ({
                                         type="number"
                                         step="0.01"
                                         className="w-30"
+                                        placeholder="Max price"
                                         {...rest}
                                         onChange={(e) => {
                                             const val = e.target.value;

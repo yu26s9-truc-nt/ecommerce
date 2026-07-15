@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.dto.CategoryUpdateDTO;
+import org.yearup.dto.ProductFilterDTO;
 import org.yearup.dto.ProductUpdateDTO;
 import org.yearup.model.Category;
 import org.yearup.model.Product;
@@ -27,11 +28,8 @@ public class ProductController {
 
     @GetMapping("")
     @PreAuthorize("permitAll()")
-    public List<Product> get(@RequestParam(name="categoryId", required = false) Integer categoryId,
-                                @RequestParam(name="minPrice", required = false) BigDecimal minPrice,
-                                @RequestParam(name="maxPrice", required = false) BigDecimal maxPrice,
-                                @RequestParam(name="subCategory", required = false) String subCategory) {
-        return productService.get(categoryId, minPrice, maxPrice, subCategory);
+    public List<Product> get(@ModelAttribute ProductFilterDTO filter) {
+        return productService.get(filter);
     }
 
     @GetMapping("{productId}")
