@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.dto.CategoryUpdateDTO;
+import org.yearup.dto.ProductFilterDTO;
 import org.yearup.model.Category;
 import org.yearup.model.Product;
 import org.yearup.service.CategoryService;
@@ -39,7 +40,9 @@ public class CategoryController {
     @GetMapping("{categoryId}/products")
     @PreAuthorize("permitAll()")
     public List<Product> getProductsById(@PathVariable int categoryId) {
-        return productService.get(categoryId, null, null, null);
+        ProductFilterDTO filter = new ProductFilterDTO();
+        filter.setCategoryId(categoryId);
+        return productService.get(filter);
     }
 
     @PostMapping()
